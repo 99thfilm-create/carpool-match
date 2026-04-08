@@ -265,6 +265,10 @@ textarea{resize:none;height:60px;line-height:1.5;letter-spacing:normal}
               <div class="fg"><label>세부 지역</label>
                 <select id="r-via-dist" disabled><option value="">-</option></select></div>
             </div>
+            <div class="fg" id="via-time-wrap" style="display:none;margin-bottom:0">
+              <label>경유지 도착 예정 시간</label>
+              <input type="time" id="r-via-time" value="07:10">
+            </div>
           </div>
         </div>
         <div id="end-wrap"></div>
@@ -424,9 +428,12 @@ function updateDist(type){
   const c=document.getElementById('r-'+type+'-city'),d=document.getElementById('r-'+type+'-dist');
   if(!c||!d)return;
   const city=c.value;
-  if(!city||!DIST[city]){d.innerHTML='<option value="">-</option>';d.disabled=true;return;}
+  if(!city||!DIST[city]){d.innerHTML='<option value="">-</option>';d.disabled=true;
+    if(type==='via'){const vt=document.getElementById('via-time-wrap');if(vt)vt.style.display='none';}
+    return;}
   d.innerHTML='<option value="">구/읍/면 선택</option>'+Object.keys(DIST[city]).map(k=>`<option>${k}</option>`).join('');
   d.disabled=false;
+  if(type==='via'){const vt=document.getElementById('via-time-wrap');if(vt)vt.style.display='block';}
 }
 function setDistVal(type,v){setTimeout(()=>{const d=document.getElementById('r-'+type+'-dist');if(d)for(let o of d.options)if(o.value===v){o.selected=true;break;}},100);}
 function gateOpts(sel){return '<option value="">선택</option>'+GATES.map(g=>`<option${g===sel?' selected':''}>${g}</option>`).join('');}
@@ -540,9 +547,24 @@ function calcMatch(driver,passenger){
   const dCities=[dCity,driver.viaCity].filter(Boolean);
   const gm=driver.dir==='to'?(driver.endGate===passenger.endGate&&driver.endGate!=='상관없음'):(driver.startGate===passenger.startGate&&driver.startGate!=='상관없음');
   if(!dCities.includes(pCity)&&!gm)return null;
+
+  // 경로 점수
   if(dCity===pCity){score+=35;const dD=driver.dir==='to'?driver.startDist:driver.endDist;const pD=passenger.dir==='to'?passenger.startDist:passenger.endDist;if(dD===pD){score+=15;reasons.push('동일 지역');}else reasons.push('같은 권역');}
-  else if(driver.viaCity===pCity){score+=20;reasons.push('경유지 포함');}
+  else if(driver.viaCity===pCity){
+    score+=30;reasons.push('경유지 경로 포함');
+    // 경유지 도착 시간 vs 탑승자 출발 시간 비교
+    if(driver.viaTime){
+      const diff=Math.abs(timeToMin(driver.viaTime)-timeToMin(passenger.depart));
+      if(diff<=15){score+=25;reasons.push('경유지 시간 거의 동일');}
+      else if(diff<=30){score+=18;reasons.push('경유지 시간 30분 이내');}
+      else if(diff<=60){score+=8;reasons.push('경유지 시간 1시간 이내');}
+      score=Math.min(score,99);
+      return score<20?null:{score,reason:reasons.slice(0,2).join(' · ')};
+    }
+  }
   if(gm){score+=15;reasons.push('같은 정문');}
+
+  // 일반 출발 시간 비교 (경유지 없거나 경유지 시간 없는 경우)
   const diff=Math.abs(timeToMin(driver.depart)-timeToMin(passenger.depart));
   if(diff<=15){score+=25;reasons.push('출발시간 거의 동일');}else if(diff<=30){score+=18;reasons.push('출발시간 30분 이내');}else if(diff<=60){score+=8;reasons.push('출발시간 1시간 이내');}
   if(driver.seats>0)score+=5;
@@ -617,7 +639,7 @@ function driverCardHTML(c,matchInfo,gOk,me){
   const dimClass=isClosed?'closed':(me&&(!gOk||!matchInfo))?'dimmed':'';
   const gBdg=c.gender==='female'?'bdg-f':'bdg-m';
   const ce=(c.contact||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-  return `<div class="ccard ${dimClass}"><div class="ch"><div class="cname-wrap"><div class="cname">${c.name} <span class="status-badge ${isClosed?'status-closed':'status-open'}" style="font-size:10px">${isClosed?'마감':'모집중'}</span></div><div class="cdate">${c.date} ${dayStr(c.date)}</div></div><div class="cbadges"><span class="bdg bdg-dir">${c.dir==='to'?'출근':'퇴근'}</span><span class="bdg ${gBdg}">${GL[c.gender]}</span>${c.pref!=='any'?`<span class="bdg bdg-pref">${GL[c.pref]} 희망</span>`:''}</div></div><div class="croute">${routeLabel(c)}</div>${addr||via?`<div class="caddr">${addr?'📍 '+addr:''}${addr&&via?' · ':''}${via}</div>`:''}<div class="cmeta"><span>🕐 ${c.depart}→${c.arrive}</span><span>👤 ${c.seats}석</span></div>${c.note?`<div class="cnote">${c.note}</div>`:''}${!isClosed&&matchInfo?`<div class="match-box"><div class="match-hd">매칭 적합도</div><div class="mscore-row"><span style="font-size:13px;font-weight:500">이 운전자와의 매칭</span><span class="mscore-num">${matchInfo.score}점</span></div><div class="mwhy">${matchInfo.reason}${!gOk?' · 성별 조건 불일치':''}</div><div class="sbar"><div class="sfill" style="width:${matchInfo.score}%"></div></div></div>`:''}${!isClosed&&me&&!gOk?`<div class="gender-warn">성별 조건이 맞지 않아요</div>`:''} ${isClosed?`<div class="closed-msg">매칭 완료된 카풀입니다</div>`:`<button class="btn-contact" onclick="copyContact('${ce}')">연락하기 (연락처 복사)</button>`}</div>`;
+  return `<div class="ccard ${dimClass}"><div class="ch"><div class="cname-wrap"><div class="cname">${c.name} <span class="status-badge ${isClosed?'status-closed':'status-open'}" style="font-size:10px">${isClosed?'마감':'모집중'}</span></div><div class="cdate">${c.date} ${dayStr(c.date)}</div></div><div class="cbadges"><span class="bdg bdg-dir">${c.dir==='to'?'출근':'퇴근'}</span><span class="bdg ${gBdg}">${GL[c.gender]}</span>${c.pref!=='any'?`<span class="bdg bdg-pref">${GL[c.pref]} 희망</span>`:''}</div></div><div class="croute">${routeLabel(c)}</div>${addr||via?`<div class="caddr">${addr?'📍 '+addr:''}${addr&&via?' · ':''}${via}</div>`:''}<div class="cmeta"><span>🕐 ${c.depart}${c.viaTime?' → '+c.viaTime:''} → ${c.arrive}</span><span>👤 ${c.seats}석</span><span>${GL[c.gender]}</span></div>${c.note?`<div class="cnote">${c.note}</div>`:''}${!isClosed&&matchInfo?`<div class="match-box"><div class="match-hd">매칭 적합도</div><div class="mscore-row"><span style="font-size:13px;font-weight:500">이 운전자와의 매칭</span><span class="mscore-num">${matchInfo.score}점</span></div><div class="mwhy">${matchInfo.reason}${!gOk?' · 성별 조건 불일치':''}</div><div class="sbar"><div class="sfill" style="width:${matchInfo.score}%"></div></div></div>`:''}${!isClosed&&me&&!gOk?`<div class="gender-warn">성별 조건이 맞지 않아요</div>`:''} ${isClosed?`<div class="closed-msg">매칭 완료된 카풀입니다</div>`:`<button class="btn-contact" onclick="copyContact('${ce}')">연락하기 (연락처 복사)</button>`}</div>`;
 }
 
 function copyContact(contact){if(navigator.clipboard){navigator.clipboard.writeText(contact).then(()=>showToast('연락처가 복사됐어요!'));}else{showToast('연락처: '+contact);}}
@@ -668,7 +690,7 @@ function fillForm(c,skipDate){
   setTimeout(()=>{
     if(c.dir==='to'){const sc=document.getElementById('r-start-city');if(sc){sc.value=c.startCity||'';updateDist('start');}setDistVal('start',c.startDist||'');setTimeout(()=>{const sa=document.getElementById('r-start-addr');if(sa)sa.value=c.startAddr||'';const eg=document.getElementById('r-end-gate');if(eg)eg.value=c.endGate||'';},120);}
     else{const sg=document.getElementById('r-start-gate');if(sg)sg.value=c.startGate||'';const ec=document.getElementById('r-end-city');if(ec){ec.value=c.endCity||'';updateDist('end');}setDistVal('end',c.endDist||'');setTimeout(()=>{const ea=document.getElementById('r-end-addr');if(ea)ea.value=c.endAddr||'';},120);}
-    if(c.role==='driver'&&c.viaCity){const vc=document.getElementById('r-via-city');if(vc){vc.value=c.viaCity;updateDist('via');}setDistVal('via',c.viaDist||'');}
+    if(c.role==='driver'&&c.viaCity){const vc=document.getElementById('r-via-city');if(vc){vc.value=c.viaCity;updateDist('via');}setDistVal('via',c.viaDist||'');setTimeout(()=>{const vt=document.getElementById('r-via-time');if(vt&&c.viaTime)vt.value=c.viaTime;},120);}
   },40);
   document.getElementById('r-depart').value=c.depart||'07:30';document.getElementById('r-arrive').value=c.arrive||'08:00';document.getElementById('r-note').value=c.note||'';seats=c.seats||3;document.getElementById('seat-n').textContent=seats;
 }
@@ -700,8 +722,9 @@ async function submitReg(){
   else{startGate=document.getElementById('r-start-gate')?.value||'';endCity=document.getElementById('r-end-city')?.value||'';endDist=document.getElementById('r-end-dist')?.value||'';endAddr=document.getElementById('r-end-addr')?.value.trim()||'';}
   const viaCity=role==='driver'?(document.getElementById('r-via-city')?.value||''):'';
   const viaDist=role==='driver'?(document.getElementById('r-via-dist')?.value||''):'';
+  const viaTime=role==='driver'&&viaCity?(document.getElementById('r-via-time')?.value||''):'';
   const pinHash = editingId ? (carpools.find(x=>x.firebaseId===editingId)?.pinHash||'') : await hashPin(nick,pin);
-  const obj={name:document.getElementById('r-name').value.trim(),contact:role==='driver'?(document.getElementById('r-contact')?.value.trim()||''):'',nick,pinHash,role,dir:direction,date,gender:myGender,pref:myPref,startCity,startDist,startAddr,startGate,viaCity,viaDist,endCity,endDist,endAddr,endGate,depart:document.getElementById('r-depart').value,arrive:document.getElementById('r-arrive').value,seats:role==='driver'?seats:0,note:document.getElementById('r-note').value.trim(),status:'open',ts:Date.now()};
+  const obj={name:document.getElementById('r-name').value.trim(),contact:role==='driver'?(document.getElementById('r-contact')?.value.trim()||''):'',nick,pinHash,role,dir:direction,date,gender:myGender,pref:myPref,startCity,startDist,startAddr,startGate,viaCity,viaDist,viaTime,endCity,endDist,endAddr,endGate,depart:document.getElementById('r-depart').value,arrive:document.getElementById('r-arrive').value,seats:role==='driver'?seats:0,note:document.getElementById('r-note').value.trim(),status:'open',ts:Date.now()};
   lastSaved={...obj};localStorage.setItem('lastSaved',JSON.stringify(lastSaved));
   try{
     if(editingId){await updateCarpool(editingId,obj);showToast('수정 완료!');cancelEdit();}
