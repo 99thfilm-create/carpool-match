@@ -25,8 +25,10 @@ html,body{max-width:480px;margin:0 auto;font-family:-apple-system,BlinkMacSystem
 .page.on{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .notice{background:#fff;border-radius:12px;border:1px solid #e8e8e8;padding:12px 14px;margin-bottom:14px;font-size:12.5px;color:#555;line-height:1.85}
-.notice-title{font-weight:600;margin-bottom:6px;font-size:13px;color:#1a1a1a}
+.notice-title{font-weight:600;margin-bottom:6px;font-size:13px;color:#1a1a1a;display:flex;justify-content:space-between;align-items:center}
 .notice em{font-style:normal;font-weight:600;color:#1a1a1a;background:#f0ece4;padding:1px 5px;border-radius:4px}
+.notice-body{overflow:hidden;transition:max-height .3s ease}
+.notice-toggle{font-size:11px;color:#8a7a60;cursor:pointer;font-weight:500;white-space:nowrap}
 .card{background:#fff;border-radius:14px;border:1px solid #e8e8e8;padding:16px;margin-bottom:12px}
 .card-title{font-size:12px;font-weight:600;color:#888;margin-bottom:14px;letter-spacing:.3px}
 .fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
@@ -36,8 +38,9 @@ html,body{max-width:480px;margin:0 auto;font-family:-apple-system,BlinkMacSystem
 label{font-size:12px;color:#888}
 input,select,textarea{width:100%;padding:11px 13px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:15px;font-family:inherit;background:#fff;color:#1a1a1a;outline:none;-webkit-appearance:none;transition:border-color .15s}
 input:focus,select:focus,textarea:focus{border-color:#1a1a1a}
+input[type=password]{letter-spacing:4px;font-size:18px}
 select:disabled{opacity:.4;background:#f5f5f7}
-textarea{resize:none;height:60px;line-height:1.5}
+textarea{resize:none;height:60px;line-height:1.5;letter-spacing:normal}
 .hint{font-size:11px;color:#bbb;margin-top:3px}
 .seg{display:flex;margin-top:6px;border-radius:10px;overflow:hidden;border:1.5px solid #e0e0e0}
 .seg-btn{flex:1;padding:12px 4px;border:none;border-right:1px solid #e0e0e0;font-size:14px;font-family:inherit;cursor:pointer;background:#f8f8f8;color:#bbb;transition:background .15s,color .15s}
@@ -111,17 +114,29 @@ textarea{resize:none;height:60px;line-height:1.5}
 .empty{text-align:center;padding:50px 20px;color:#aaa}
 .empty .icon{font-size:48px;margin-bottom:14px}
 .empty p{font-size:13px;line-height:1.8}
-.bottom-tab{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid #e8e8e8;display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
-.tab-btn{flex:1;padding:12px 4px 10px;border:none;background:none;font-family:inherit;font-size:11px;color:#aaa;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:500}
-.tab-btn .icon{font-size:22px;line-height:1}
-.tab-btn.on{color:#1a1a1a;font-weight:600}
+.bottom-tab{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:2px solid #e8e0d0;display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
+.tab-btn{flex:1;padding:12px 4px 10px;border:none;background:none;font-family:inherit;font-size:12px;color:#bbb;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:500;transition:color .2s}
+.tab-btn .icon{font-size:24px;line-height:1}
+.tab-btn.on{color:#1a1a1a;font-weight:700}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);background:#1a1a1a;color:#fff;padding:12px 24px;border-radius:20px;font-size:13px;opacity:0;transition:all .3s;z-index:999;white-space:nowrap;pointer-events:none;max-width:88vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .no-my{background:#f8f8f8;border-radius:12px;padding:13px 15px;margin-bottom:14px;font-size:13px;color:#888;display:flex;justify-content:space-between;align-items:center}
 .no-my button{background:none;border:none;color:#1a1a1a;font-weight:600;font-family:inherit;font-size:13px;cursor:pointer;text-decoration:underline}
 .sync-status{font-size:11px;color:#aaa;text-align:right;margin-bottom:8px}
-.sync-status.syncing{color:#2563a8}
+.sync-status.ok{color:#2a8a2a}
 .sync-status.error{color:#c0392b}
+
+/* 로그인 모달 */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:flex-end;justify-content:center}
+.modal{background:#fff;border-radius:20px 20px 0 0;padding:24px 20px 40px;width:100%;max-width:480px;animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal h2{font-size:16px;font-weight:700;margin-bottom:6px;color:#1a1a1a}
+.modal p{font-size:13px;color:#888;margin-bottom:20px;line-height:1.6}
+.modal .fg{margin-bottom:14px}
+.modal-btns{display:flex;gap:10px;margin-top:6px}
+.modal-btns .btn-primary{flex:1}
+.modal-btns .btn-secondary{flex:1;margin-top:0}
+.pin-input{text-align:center;letter-spacing:8px;font-size:22px;font-weight:700}
 </style>
 </head>
 <body>
@@ -131,6 +146,7 @@ textarea{resize:none;height:60px;line-height:1.5}
   <p>출퇴근 카풀 매칭 · 삼군 통합</p>
 </div>
 
+<!-- 등록 페이지 -->
 <div class="page on" id="page-reg">
   <div class="step-bar">
     <div class="step-item">
@@ -152,12 +168,20 @@ textarea{resize:none;height:60px;line-height:1.5}
     <div id="banner-edit" class="banner banner-edit" style="display:none">✏️ 수정 중 — 변경 후 저장하세요</div>
     <div id="banner-recall" class="banner banner-recall" style="display:none">↺ 이전 정보를 불러왔어요 — 날짜를 확인 후 등록하세요</div>
 
+    <!-- STEP 1 -->
     <div id="step1">
       <div class="notice">
-        <div class="notice-title">이용 안내</div>
-        부대 밖 탑승 시 <em>공무원증으로 신분 확인</em>을 꼭 하세요.<br>
-        운전자는 <em>카카오 오픈채팅 주소를 등록</em>하시면 개인정보를 보호할 수 있습니다.<br>
-        카풀 매칭 완료 시 운전자는 <em>'마감'</em>으로 변경해 주세요.
+        <div class="notice-title">
+          <span>이용 안내</span>
+          <span class="notice-toggle" onclick="toggleNotice()">접기 ▲</span>
+        </div>
+        <div class="notice-body" id="notice-body">
+          부대 밖 탑승 시 <em>공무원증으로 신분 확인</em>을 꼭 하세요.<br>
+          운전자는 <em>카카오 오픈채팅 주소를 등록</em>하시면 개인정보를 보호할 수 있습니다.<br>
+          카풀 매칭 완료 시 운전자는 <em>'마감'</em>으로 변경해 주세요.<br><br>
+          등록 시 설정한 <em>닉네임 + 비밀번호 4자리</em>를 꼭 기억하세요.<br>
+          재접속 시 '내 글 불러오기'로 내 등록 정보를 다시 찾을 수 있습니다.
+        </div>
       </div>
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
@@ -176,6 +200,22 @@ textarea{resize:none;height:60px;line-height:1.5}
           <label>연락처 / 오픈채팅 주소</label>
           <input id="r-contact" type="text" placeholder="카카오ID · 전화번호 · 오픈채팅URL">
         </div>
+        <!-- 닉네임 + PIN -->
+        <div class="card" style="background:#f8f8f8;border:1px solid #e8e4dc;margin-bottom:0;padding:13px">
+          <div style="font-size:12px;font-weight:600;color:#7a5a30;margin-bottom:10px">🔑 내 글 관리용 (재접속 시 필요)</div>
+          <div class="row" style="margin-bottom:0">
+            <div class="fg" style="margin-bottom:0">
+              <label>닉네임</label>
+              <input id="r-nick" type="text" placeholder="예) 홍길동운전자" autocomplete="username">
+            </div>
+            <div class="fg" style="margin-bottom:0">
+              <label>비밀번호 4자리</label>
+              <input id="r-pin" type="password" inputmode="numeric" maxlength="4" placeholder="••••" class="pin-input" autocomplete="new-password">
+            </div>
+          </div>
+          <div class="hint" style="margin-top:6px">재접속 시 닉네임+비밀번호로 내 글을 불러올 수 있어요</div>
+        </div>
+        <div style="height:12px"></div>
         <div class="row">
           <div class="fg">
             <label>본인 성별</label>
@@ -201,9 +241,10 @@ textarea{resize:none;height:60px;line-height:1.5}
           </div>
         </div>
       </div>
-      <button class="btn-primary" onclick="goStep(2)">다음 — 경로 입력 →</button>
+      <button class="btn-primary" onclick="goStep(2)" style="margin-top:12px">다음 — 경로 입력 →</button>
     </div>
 
+    <!-- STEP 2 -->
     <div id="step2" style="display:none">
       <button class="btn-back" onclick="goStep(1)">← 이전</button>
       <div class="card">
@@ -229,6 +270,7 @@ textarea{resize:none;height:60px;line-height:1.5}
       <button class="btn-secondary" onclick="goStep(1)">← 이전으로</button>
     </div>
 
+    <!-- STEP 3 -->
     <div id="step3" style="display:none">
       <button class="btn-back" onclick="goStep(2)">← 이전</button>
       <div class="card">
@@ -262,6 +304,7 @@ textarea{resize:none;height:60px;line-height:1.5}
   </div>
 </div>
 
+<!-- 목록 페이지 -->
 <div class="page" id="page-list">
   <div style="padding:12px">
     <div class="sync-status" id="sync-status"></div>
@@ -274,14 +317,36 @@ textarea{resize:none;height:60px;line-height:1.5}
   </div>
 </div>
 
+<!-- 하단 탭 -->
 <div class="bottom-tab">
   <button class="tab-btn on" id="tab-reg" onclick="switchTab('reg')">
-    <span class="icon">✏️</span>등록
+    <span class="icon">✏️</span>등록하기
   </button>
   <button class="tab-btn" id="tab-list" onclick="switchTab('list')">
     <span class="icon">🚗</span>카풀 찾기
   </button>
 </div>
+
+<!-- 로그인 모달 -->
+<div class="modal-bg" id="login-modal" style="display:none">
+  <div class="modal">
+    <h2>🔑 내 글 불러오기</h2>
+    <p>등록할 때 설정한 닉네임과 비밀번호 4자리를 입력하세요.</p>
+    <div class="fg">
+      <label>닉네임</label>
+      <input id="login-nick" type="text" placeholder="예) 홍길동운전자" autocomplete="username">
+    </div>
+    <div class="fg">
+      <label>비밀번호 4자리</label>
+      <input id="login-pin" type="password" inputmode="numeric" maxlength="4" placeholder="••••" class="pin-input" autocomplete="current-password">
+    </div>
+    <div class="modal-btns">
+      <button class="btn-secondary" onclick="closeLoginModal()" style="margin-top:0">취소</button>
+      <button class="btn-primary" onclick="doLogin()">확인</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -314,9 +379,18 @@ let role='driver',direction='to',seats=3,filter='to';
 let myGender='male',myPref='any';
 let editingId=null,myFirebaseId=null,lastSaved=null;
 let carpools=[],currentStep=1,unsubscribe=null;
+let noticeOpen=true;
 
+// localStorage 복원
 myFirebaseId=localStorage.getItem('myFirebaseId')||null;
 lastSaved=JSON.parse(localStorage.getItem('lastSaved')||'null');
+
+// 해시 함수 (PIN 암호화)
+async function hashPin(nick,pin){
+  const str=nick.trim().toLowerCase()+'::'+pin;
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
 
 function todayStr(){return new Date().toISOString().split('T')[0];}
 function dayStr(s){if(!s)return '';const d=new Date(s+'T00:00:00');return DAYS[d.getDay()]+'요일';}
@@ -336,16 +410,27 @@ function gateOpts(sel){return '<option value="">선택</option>'+GATES.map(g=>`<
 function timeToMin(t){if(!t)return 0;const[h,m]=t.split(':').map(Number);return h*60+m;}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 
+// 공지 접기/펼치기
+function toggleNotice(){
+  noticeOpen=!noticeOpen;
+  const body=document.getElementById('notice-body');
+  const btn=document.querySelector('.notice-toggle');
+  body.style.maxHeight=noticeOpen?'200px':'0';
+  body.style.paddingTop=noticeOpen?'4px':'0';
+  btn.textContent=noticeOpen?'접기 ▲':'펼치기 ▼';
+}
+
+// Firebase
 async function addCarpool(data){
-  setSyncStatus('저장 중...','syncing');
+  setSyncStatus('저장 중...','');
   const ref=await addDoc(collection(db,'carpools'),data);
-  setSyncStatus('저장됨 ✓');
+  setSyncStatus('🟢 저장됨','ok');
   return ref.id;
 }
 async function updateCarpool(fid,data){
-  setSyncStatus('수정 중...','syncing');
+  setSyncStatus('수정 중...','');
   await updateDoc(doc(db,'carpools',fid),data);
-  setSyncStatus('수정됨 ✓');
+  setSyncStatus('🟢 수정됨','ok');
 }
 async function deleteCarpool(fid){
   await deleteDoc(doc(db,'carpools',fid));
@@ -357,15 +442,20 @@ function startListener(){
   const today=todayStr();
   unsubscribe=onSnapshot(query(collection(db,'carpools'),orderBy('ts','desc')),(snap)=>{
     carpools=snap.docs.map(d=>({...d.data(),firebaseId:d.id})).filter(c=>!c.date||c.date>=today);
-    setSyncStatus('🟢 실시간 동기화 중');
+    setSyncStatus('🟢 실시간 동기화 중','ok');
     renderListPage();
-  },(err)=>{setSyncStatus('연결 오류 — 새로고침 해주세요','error');});
+  },(err)=>{setSyncStatus('⚠️ 연결 오류 — 새로고침 해주세요','error');});
 }
 
+// 스텝
 function goStep(n){
   if(n>1){
     if(!document.getElementById('r-name').value.trim()){showToast('이름을 입력해주세요');return;}
     if(role==='driver'&&!document.getElementById('r-contact').value.trim()){showToast('연락처를 입력해주세요');return;}
+    const nick=document.getElementById('r-nick').value.trim();
+    const pin=document.getElementById('r-pin').value.trim();
+    if(!nick){showToast('닉네임을 입력해주세요');return;}
+    if(pin.length!==4){showToast('비밀번호는 숫자 4자리로 입력해주세요');return;}
   }
   if(n>2){
     if(direction==='to'){
@@ -442,7 +532,10 @@ async function toggleStatus(fid){const c=carpools.find(x=>x.firebaseId===fid);if
 function renderMyCard(){
   const w=document.getElementById('my-info-wrap');
   const c=myFirebaseId?carpools.find(x=>x.firebaseId===myFirebaseId):null;
-  if(!c){w.innerHTML=`<div class="no-my"><span>내 정보를 등록하면 매칭 적합도가 표시됩니다</span><button onclick="switchTab('reg')">등록하기</button></div>`;return;}
+  if(!c){
+    w.innerHTML=`<div class="no-my"><span>내 정보를 등록하거나 불러오세요</span><button onclick="openLoginModal()">🔑 내 글 불러오기</button></div>`;
+    return;
+  }
   const isOpen=c.status==='open';
   w.innerHTML=`<div class="my-card"><div class="my-hd"><div><div class="my-title">내 등록 (${c.role==='driver'?'운전자':'탑승자'} · ${c.dir==='to'?'출근':'퇴근'})</div><div class="my-date">${c.date} ${dayStr(c.date)}</div></div><div class="my-btns">${c.role==='driver'?`<button class="btn-sm ${isOpen?'btn-close-rec':'btn-reopen'}" onclick="toggleStatus('${c.firebaseId}')">${isOpen?'마감':'모집중'}</button>`:''}<button class="btn-sm btn-edit" onclick="editCard('${c.firebaseId}')">수정</button><button class="btn-sm btn-del" onclick="delMyCard('${c.firebaseId}')">삭제</button></div></div><div class="my-route">${routeLabel(c)}</div>${(c.dir==='to'&&c.startAddr)||(c.dir==='from'&&c.endAddr)?`<div style="font-size:11px;color:#aaa;margin-bottom:4px">📍 ${c.dir==='to'?c.startAddr:c.endAddr}</div>`:''}<div class="my-meta"><span class="status-badge ${isOpen?'status-open':'status-closed'}">${isOpen?'모집중':'마감'}</span><span>🕐 ${c.depart}→${c.arrive}</span>${c.role==='driver'?`<span>👤 ${c.seats}석</span>`:''}<span>${GL[c.gender]} · 희망 ${GL[c.pref]}</span></div></div>`;
 }
@@ -470,6 +563,24 @@ function renderListPage(){
   el.innerHTML=scored.map(c=>driverCardHTML(c,c.matchInfo,c.gOk,me)).join('');
 }
 
+// 로그인 모달
+function openLoginModal(){document.getElementById('login-modal').style.display='flex';document.getElementById('login-nick').focus();}
+function closeLoginModal(){document.getElementById('login-modal').style.display='none';document.getElementById('login-nick').value='';document.getElementById('login-pin').value='';}
+
+async function doLogin(){
+  const nick=document.getElementById('login-nick').value.trim();
+  const pin=document.getElementById('login-pin').value.trim();
+  if(!nick||pin.length!==4){showToast('닉네임과 비밀번호 4자리를 입력해주세요');return;}
+  const hash=await hashPin(nick,pin);
+  const found=carpools.find(c=>c.pinHash===hash);
+  if(!found){showToast('일치하는 등록 정보가 없어요');return;}
+  myFirebaseId=found.firebaseId;
+  localStorage.setItem('myFirebaseId',myFirebaseId);
+  closeLoginModal();
+  renderListPage();
+  showToast('내 글을 불러왔어요 ✓');
+}
+
 function fillForm(c,skipDate){
   role=c.role;myGender=c.gender||'male';myPref=c.pref||'any';direction=c.dir;
   segSet('role-seg',c.role==='driver'?0:1);segSet('gender-seg',myGender==='male'?0:1);segSet('pref-seg',myPref==='any'?0:myPref==='male'?1:2);segSet('dir-seg',c.dir==='to'?0:1);
@@ -480,6 +591,7 @@ function fillForm(c,skipDate){
   document.getElementById('btn-submit').textContent=c.role==='passenger'?'카풀 매칭하기':'등록하기';
   document.getElementById('r-name').value=c.name||'';
   const rc=document.getElementById('r-contact');if(rc)rc.value=c.contact||'';
+  document.getElementById('r-nick').value=c.nick||'';
   renderStartWrap();renderEndWrap();
   const dateVal=skipDate?todayStr():(c.date||todayStr());
   document.getElementById('r-date').value=dateVal;document.getElementById('r-day').value=dayStr(dateVal);
@@ -498,7 +610,7 @@ function editCard(fid){const c=carpools.find(x=>x.firebaseId===fid);if(!c)return
 function cancelEdit(){editingId=null;resetForm();document.getElementById('banner-edit').style.display='none';document.getElementById('banner-recall').style.display='none';document.getElementById('btn-cancel').style.display='none';document.getElementById('btn-recall').style.display=lastSaved?'block':'none';}
 
 function resetForm(){
-  ['r-name','r-contact','r-note'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['r-name','r-contact','r-note','r-nick','r-pin'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   role='driver';seats=3;direction='to';myGender='male';myPref='any';editingId=null;
   segSet('role-seg',0);segSet('dir-seg',0);segSet('gender-seg',0);segSet('pref-seg',0);
   document.getElementById('contact-wrap').style.display='block';document.getElementById('via-wrap').style.display='block';document.getElementById('seat-wrap').style.display='block';
@@ -511,12 +623,15 @@ function resetForm(){
 
 async function submitReg(){
   const date=document.getElementById('r-date').value;if(!date){showToast('날짜를 선택해주세요');return;}
+  const nick=document.getElementById('r-nick').value.trim();
+  const pin=document.getElementById('r-pin').value.trim();
   let startCity='',startDist='',startAddr='',startGate='',endCity='',endDist='',endAddr='',endGate='';
   if(direction==='to'){startCity=document.getElementById('r-start-city')?.value||'';startDist=document.getElementById('r-start-dist')?.value||'';startAddr=document.getElementById('r-start-addr')?.value.trim()||'';endGate=document.getElementById('r-end-gate')?.value||'';}
   else{startGate=document.getElementById('r-start-gate')?.value||'';endCity=document.getElementById('r-end-city')?.value||'';endDist=document.getElementById('r-end-dist')?.value||'';endAddr=document.getElementById('r-end-addr')?.value.trim()||'';}
   const viaCity=role==='driver'?(document.getElementById('r-via-city')?.value||''):'';
   const viaDist=role==='driver'?(document.getElementById('r-via-dist')?.value||''):'';
-  const obj={name:document.getElementById('r-name').value.trim(),contact:role==='driver'?(document.getElementById('r-contact')?.value.trim()||''):'',role,dir:direction,date,gender:myGender,pref:myPref,startCity,startDist,startAddr,startGate,viaCity,viaDist,endCity,endDist,endAddr,endGate,depart:document.getElementById('r-depart').value,arrive:document.getElementById('r-arrive').value,seats:role==='driver'?seats:0,note:document.getElementById('r-note').value.trim(),status:'open',ts:Date.now()};
+  const pinHash = editingId ? (carpools.find(x=>x.firebaseId===editingId)?.pinHash||'') : await hashPin(nick,pin);
+  const obj={name:document.getElementById('r-name').value.trim(),contact:role==='driver'?(document.getElementById('r-contact')?.value.trim()||''):'',nick,pinHash,role,dir:direction,date,gender:myGender,pref:myPref,startCity,startDist,startAddr,startGate,viaCity,viaDist,endCity,endDist,endAddr,endGate,depart:document.getElementById('r-depart').value,arrive:document.getElementById('r-arrive').value,seats:role==='driver'?seats:0,note:document.getElementById('r-note').value.trim(),status:'open',ts:Date.now()};
   lastSaved={...obj};localStorage.setItem('lastSaved',JSON.stringify(lastSaved));
   try{
     if(editingId){await updateCarpool(editingId,obj);showToast('수정 완료!');cancelEdit();}
@@ -532,13 +647,16 @@ async function delMyCard(fid){
   document.getElementById('btn-recall').style.display=lastSaved?'block':'none';showToast('삭제됐어요');
 }
 
-window.goStep=goStep;window.switchTab=switchTab;window.setRole=setRole;window.setGender=setGender;window.setPref=setPref;window.setDir=setDir;window.chSeat=chSeat;window.setFilter=setFilter;window.updateDist=updateDist;window.onDateChange=onDateChange;window.recallLast=recallLast;window.editCard=editCard;window.cancelEdit=cancelEdit;window.submitReg=submitReg;window.delMyCard=delMyCard;window.toggleStatus=toggleStatus;window.copyContact=copyContact;window.showToast=showToast;
+window.goStep=goStep;window.switchTab=switchTab;window.setRole=setRole;window.setGender=setGender;window.setPref=setPref;window.setDir=setDir;window.chSeat=chSeat;window.setFilter=setFilter;window.updateDist=updateDist;window.onDateChange=onDateChange;window.recallLast=recallLast;window.editCard=editCard;window.cancelEdit=cancelEdit;window.submitReg=submitReg;window.delMyCard=delMyCard;window.toggleStatus=toggleStatus;window.copyContact=copyContact;window.openLoginModal=openLoginModal;window.closeLoginModal=closeLoginModal;window.doLogin=doLogin;window.toggleNotice=toggleNotice;window.showToast=showToast;
 
 renderStartWrap();renderEndWrap();
 document.getElementById('r-date').value=todayStr();
 document.getElementById('r-day').value=dayStr(todayStr());
 document.getElementById('contact-wrap').style.display='block';
 document.getElementById('btn-recall').style.display=lastSaved?'block':'none';
+// 공지 초기 상태
+document.getElementById('notice-body').style.maxHeight='200px';
+document.getElementById('notice-body').style.paddingTop='4px';
 </script>
 </body>
 </html>
