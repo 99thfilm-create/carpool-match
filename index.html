@@ -9,14 +9,10 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{max-width:480px;margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif;background:#f5f5f7;color:#1a1a1a;min-height:100vh;padding-bottom:80px}
-
-/* 헤더 */
 .header{background:#e8e0d0;padding:14px 18px 12px;position:sticky;top:0;z-index:100}
 .header h1{font-size:17px;font-weight:700;color:#2a2018}
 .header p{font-size:11px;color:#8a7a60;margin-top:2px}
-
-/* 스텝 인디케이터 */
-.step-bar{background:#e8e0d0;padding:0 18px 14px;display:flex;align-items:center;gap:0;position:sticky;top:52px;z-index:99}
+.step-bar{background:#e8e0d0;padding:0 18px 12px;display:flex;align-items:center;position:sticky;top:52px;z-index:99}
 .step-item{display:flex;align-items:center;gap:6px;flex:1}
 .step-circle{width:24px;height:24px;border-radius:50%;border:2px solid #c8b898;background:#fff;color:#c8b898;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
 .step-circle.done{background:#2a2018;border-color:#2a2018;color:#fff}
@@ -25,22 +21,14 @@ html,body{max-width:480px;margin:0 auto;font-family:-apple-system,BlinkMacSystem
 .step-label.active{color:#2a2018}
 .step-line{width:20px;height:2px;background:#c8b898;flex-shrink:0;margin:0 2px}
 .step-line.done{background:#2a2018}
-
-/* 페이지 */
 .page{display:none;padding:14px;animation:fadeIn .2s ease}
 .page.on{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-
-/* 공지 */
 .notice{background:#fff;border-radius:12px;border:1px solid #e8e8e8;padding:12px 14px;margin-bottom:14px;font-size:12.5px;color:#555;line-height:1.85}
 .notice-title{font-weight:600;margin-bottom:6px;font-size:13px;color:#1a1a1a}
 .notice em{font-style:normal;font-weight:600;color:#1a1a1a;background:#f0ece4;padding:1px 5px;border-radius:4px}
-
-/* 카드 */
 .card{background:#fff;border-radius:14px;border:1px solid #e8e8e8;padding:16px;margin-bottom:12px}
-.card-title{font-size:13px;font-weight:600;color:#888;margin-bottom:14px;text-transform:uppercase;letter-spacing:.3px}
-
-/* 입력 */
+.card-title{font-size:12px;font-weight:600;color:#888;margin-bottom:14px;letter-spacing:.3px}
 .fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
 .fg:last-child{margin-bottom:0}
 .row{display:flex;gap:10px;margin-bottom:12px}
@@ -51,43 +39,30 @@ input:focus,select:focus,textarea:focus{border-color:#1a1a1a}
 select:disabled{opacity:.4;background:#f5f5f7}
 textarea{resize:none;height:60px;line-height:1.5}
 .hint{font-size:11px;color:#bbb;margin-top:3px}
-
-/* 세그먼트 버튼 */
 .seg{display:flex;margin-top:6px;border-radius:10px;overflow:hidden;border:1.5px solid #e0e0e0}
-.seg-btn{flex:1;padding:12px 4px;border:none;border-right:1px solid #e0e0e0;font-size:14px;font-family:inherit;cursor:pointer;background:#f8f8f8;color:#bbb;font-weight:400;transition:background .15s,color .15s}
+.seg-btn{flex:1;padding:12px 4px;border:none;border-right:1px solid #e0e0e0;font-size:14px;font-family:inherit;cursor:pointer;background:#f8f8f8;color:#bbb;transition:background .15s,color .15s}
 .seg-btn:last-child{border-right:none}
 .seg-btn.on{background:#1a1a1a !important;color:#fff !important;font-weight:600}
-
 .tri{display:flex;margin-top:6px;border-radius:10px;overflow:hidden;border:1.5px solid #e0e0e0}
-.tri-btn{flex:1;padding:11px 2px;border:none;border-right:1px solid #e0e0e0;font-size:13px;font-family:inherit;cursor:pointer;background:#f8f8f8;color:#bbb;font-weight:400;transition:background .15s,color .15s}
+.tri-btn{flex:1;padding:11px 2px;border:none;border-right:1px solid #e0e0e0;font-size:13px;font-family:inherit;cursor:pointer;background:#f8f8f8;color:#bbb;transition:background .15s,color .15s}
 .tri-btn:last-child{border-right:none}
 .tri-btn.on{background:#1a1a1a !important;color:#fff !important;font-weight:600}
-
-/* 좌석 */
 .seat-row{display:flex;align-items:center;gap:14px;margin-top:8px}
-.sbtn{width:40px;height:40px;border:1.5px solid #e0e0e0;border-radius:10px;background:#f8f8f8;font-size:20px;cursor:pointer;font-family:inherit;color:#1a1a1a;display:flex;align-items:center;justify-content:center;font-weight:300}
+.sbtn{width:40px;height:40px;border:1.5px solid #e0e0e0;border-radius:10px;background:#f8f8f8;font-size:22px;cursor:pointer;font-family:inherit;color:#1a1a1a;display:flex;align-items:center;justify-content:center}
 .snum{font-size:24px;font-weight:600;width:32px;text-align:center}
-
-/* 버튼 */
-.btn-primary{width:100%;padding:16px;background:#1a1a1a;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:opacity .15s}
+.btn-primary{width:100%;padding:16px;background:#1a1a1a;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer}
 .btn-primary:active{opacity:.8}
 .btn-secondary{width:100%;padding:14px;background:#fff;color:#888;border:1.5px solid #e0e0e0;border-radius:12px;font-size:14px;font-family:inherit;cursor:pointer;margin-top:10px}
 .btn-back{display:flex;align-items:center;gap:6px;background:none;border:none;color:#888;font-size:13px;font-family:inherit;cursor:pointer;padding:0;margin-bottom:16px}
 .btn-recall{padding:7px 12px;background:#f5f0e8;color:#7a5a30;border:1px solid #e0d0b0;border-radius:8px;font-size:12px;font-family:inherit;cursor:pointer;font-weight:500}
-
-/* loc wrap */
 .loc-wrap{background:#f8f8f8;border-radius:10px;padding:12px;margin-bottom:12px}
 .loc-title{font-size:12px;font-weight:600;color:#888;margin-bottom:10px}
 .loc-row{display:flex;gap:8px;margin-bottom:10px}
 .loc-row:last-child{margin-bottom:0}
 .loc-row .fg{margin-bottom:0}
-
-/* 배너 */
 .banner{border-radius:10px;padding:10px 13px;margin-bottom:12px;font-size:13px;font-weight:500}
 .banner-edit{background:#fff8e8;border:1px solid #e8c96e;color:#7a5a00}
 .banner-recall{background:#f5f0e8;border:1px solid #e0d0b0;color:#7a5a30}
-
-/* 목록 페이지 */
 .my-card{background:#fff;border-radius:14px;border:2px solid #1a1a1a;padding:14px;margin-bottom:14px}
 .my-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:8px}
 .my-title{font-size:12px;font-weight:600;color:#1a1a1a;line-height:1.4}
@@ -103,8 +78,6 @@ textarea{resize:none;height:60px;line-height:1.5}
 .status-badge{font-size:11px;padding:2px 9px;border-radius:8px;font-weight:600}
 .status-open{background:#e8f5e8;color:#2a8a2a;border:1px solid #90d090}
 .status-closed{background:#fef0e0;color:#b86000;border:1px solid #e8b060}
-
-/* 운전자 카드 */
 .ccard{background:#fff;border-radius:14px;border:1px solid #e8e8e8;padding:14px;margin-bottom:10px;animation:fadeIn .3s ease}
 .ccard.closed{opacity:.4;border-style:dashed}
 .ccard.dimmed{opacity:.5}
@@ -119,7 +92,6 @@ textarea{resize:none;height:60px;line-height:1.5}
 .bdg-f{background:#fce8f3;color:#a83263;border:1px solid #f0b0d0}
 .bdg-pref{background:#fef3e8;color:#a86000;border:1px solid #f0d090}
 .croute{font-size:14px;font-weight:500;margin-bottom:6px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;line-height:1.7}
-.arr{color:#bbb;font-size:12px}
 .cmeta{display:flex;gap:10px;font-size:12px;color:#888;margin-bottom:8px;flex-wrap:wrap}
 .caddr{font-size:11px;color:#aaa;background:#f8f8f8;padding:6px 10px;border-radius:7px;margin-bottom:8px;line-height:1.5}
 .cnote{font-size:12px;color:#666;background:#f8f8f8;padding:8px 11px;border-radius:8px;margin-bottom:10px;line-height:1.5}
@@ -133,31 +105,23 @@ textarea{resize:none;height:60px;line-height:1.5}
 .gender-warn{font-size:11px;color:#c0392b;background:#fef0f0;padding:7px 10px;border-radius:7px;margin-bottom:8px}
 .btn-contact{width:100%;padding:13px;background:#1a1a1a;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer}
 .closed-msg{text-align:center;font-size:12px;color:#b86000;padding:8px;background:#fef8f0;border-radius:8px;margin-bottom:8px}
-
-/* 칩 */
 .chips{display:flex;gap:8px;margin-bottom:14px}
-.chip{padding:9px 20px;border:1.5px solid #e0e0e0;border-radius:20px;background:#fff;font-size:13px;font-family:inherit;cursor:pointer;color:#888;transition:all .15s;font-weight:500}
+.chip{padding:9px 20px;border:1.5px solid #e0e0e0;border-radius:20px;background:#fff;font-size:13px;font-family:inherit;cursor:pointer;color:#888;font-weight:500}
 .chip.on{background:#1a1a1a;border-color:#1a1a1a;color:#fff}
-
 .empty{text-align:center;padding:50px 20px;color:#aaa}
 .empty .icon{font-size:48px;margin-bottom:14px}
 .empty p{font-size:13px;line-height:1.8}
-
-/* 하단 탭 */
 .bottom-tab{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid #e8e8e8;display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
-.tab-btn{flex:1;padding:12px 4px 10px;border:none;background:none;font-family:inherit;font-size:11px;color:#aaa;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:500;transition:color .15s}
+.tab-btn{flex:1;padding:12px 4px 10px;border:none;background:none;font-family:inherit;font-size:11px;color:#aaa;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:500}
 .tab-btn .icon{font-size:22px;line-height:1}
 .tab-btn.on{color:#1a1a1a;font-weight:600}
-
-/* 토스트 */
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);background:#1a1a1a;color:#fff;padding:12px 24px;border-radius:20px;font-size:13px;opacity:0;transition:all .3s;z-index:999;white-space:nowrap;pointer-events:none;max-width:88vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
 .no-my{background:#f8f8f8;border-radius:12px;padding:13px 15px;margin-bottom:14px;font-size:13px;color:#888;display:flex;justify-content:space-between;align-items:center}
 .no-my button{background:none;border:none;color:#1a1a1a;font-weight:600;font-family:inherit;font-size:13px;cursor:pointer;text-decoration:underline}
-
-/* 구분선 */
-.divider{height:1px;background:#f0f0f0;margin:16px 0}
+.sync-status{font-size:11px;color:#aaa;text-align:right;margin-bottom:8px}
+.sync-status.syncing{color:#2563a8}
+.sync-status.error{color:#c0392b}
 </style>
 </head>
 <body>
@@ -167,11 +131,8 @@ textarea{resize:none;height:60px;line-height:1.5}
   <p>출퇴근 카풀 매칭 · 삼군 통합</p>
 </div>
 
-<!-- ===== 등록 페이지 ===== -->
 <div class="page on" id="page-reg">
-
-  <!-- 스텝 바 -->
-  <div class="step-bar" style="background:#e8e0d0;padding:8px 18px 12px;display:flex;align-items:center">
+  <div class="step-bar">
     <div class="step-item">
       <div class="step-circle active" id="sc1">1</div>
       <span class="step-label active" id="sl1">기본 정보</span>
@@ -187,12 +148,10 @@ textarea{resize:none;height:60px;line-height:1.5}
       <span class="step-label" id="sl3">일정</span>
     </div>
   </div>
-
   <div style="padding:12px">
     <div id="banner-edit" class="banner banner-edit" style="display:none">✏️ 수정 중 — 변경 후 저장하세요</div>
     <div id="banner-recall" class="banner banner-recall" style="display:none">↺ 이전 정보를 불러왔어요 — 날짜를 확인 후 등록하세요</div>
 
-    <!-- STEP 1 -->
     <div id="step1">
       <div class="notice">
         <div class="notice-title">이용 안내</div>
@@ -200,7 +159,6 @@ textarea{resize:none;height:60px;line-height:1.5}
         운전자는 <em>카카오 오픈채팅 주소를 등록</em>하시면 개인정보를 보호할 수 있습니다.<br>
         카풀 매칭 완료 시 운전자는 <em>'마감'</em>으로 변경해 주세요.
       </div>
-
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
           <span class="card-title" style="margin-bottom:0">구분 선택</span>
@@ -213,10 +171,7 @@ textarea{resize:none;height:60px;line-height:1.5}
             <button class="seg-btn" onclick="setRole('passenger',1)">🙋 탑승자</button>
           </div>
         </div>
-        <div class="fg">
-          <label>이름</label>
-          <input id="r-name" type="text" placeholder="홍길동" autocomplete="name">
-        </div>
+        <div class="fg"><label>이름</label><input id="r-name" type="text" placeholder="홍길동"></div>
         <div class="fg" id="contact-wrap">
           <label>연락처 / 오픈채팅 주소</label>
           <input id="r-contact" type="text" placeholder="카카오ID · 전화번호 · 오픈채팅URL">
@@ -249,7 +204,6 @@ textarea{resize:none;height:60px;line-height:1.5}
       <button class="btn-primary" onclick="goStep(2)">다음 — 경로 입력 →</button>
     </div>
 
-    <!-- STEP 2 -->
     <div id="step2" style="display:none">
       <button class="btn-back" onclick="goStep(1)">← 이전</button>
       <div class="card">
@@ -259,17 +213,13 @@ textarea{resize:none;height:60px;line-height:1.5}
           <div class="loc-wrap">
             <div class="loc-title">경유지 <span style="font-size:11px;font-weight:400;color:#bbb">(선택)</span></div>
             <div class="loc-row">
-              <div class="fg">
-                <label>권역</label>
+              <div class="fg"><label>권역</label>
                 <select id="r-via-city" onchange="updateDist('via')">
                   <option value="">없음</option>
                   <option>대전</option><option>세종</option><option>논산</option><option>공주</option><option>계룡</option>
-                </select>
-              </div>
-              <div class="fg">
-                <label>세부 지역</label>
-                <select id="r-via-dist" disabled><option value="">-</option></select>
-              </div>
+                </select></div>
+              <div class="fg"><label>세부 지역</label>
+                <select id="r-via-dist" disabled><option value="">-</option></select></div>
             </div>
           </div>
         </div>
@@ -279,30 +229,17 @@ textarea{resize:none;height:60px;line-height:1.5}
       <button class="btn-secondary" onclick="goStep(1)">← 이전으로</button>
     </div>
 
-    <!-- STEP 3 -->
     <div id="step3" style="display:none">
       <button class="btn-back" onclick="goStep(2)">← 이전</button>
       <div class="card">
         <div class="card-title">일정 및 상세</div>
         <div class="row">
-          <div class="fg">
-            <label>날짜</label>
-            <input type="date" id="r-date" onchange="onDateChange()">
-          </div>
-          <div class="fg">
-            <label>요일</label>
-            <input type="text" id="r-day" readonly style="background:#f8f8f8;color:#888;cursor:default;border-color:#f0f0f0">
-          </div>
+          <div class="fg"><label>날짜</label><input type="date" id="r-date" onchange="onDateChange()"></div>
+          <div class="fg"><label>요일</label><input type="text" id="r-day" readonly style="background:#f8f8f8;color:#888;cursor:default;border-color:#f0f0f0"></div>
         </div>
         <div class="row">
-          <div class="fg">
-            <label>출발 시간</label>
-            <input id="r-depart" type="time" value="07:30">
-          </div>
-          <div class="fg">
-            <label>도착 예정</label>
-            <input id="r-arrive" type="time" value="08:00">
-          </div>
+          <div class="fg"><label>출발 시간</label><input id="r-depart" type="time" value="07:30"></div>
+          <div class="fg"><label>도착 예정</label><input id="r-arrive" type="time" value="08:00"></div>
         </div>
         <div class="fg" id="seat-wrap">
           <label>탑승 가능 인원</label>
@@ -325,9 +262,9 @@ textarea{resize:none;height:60px;line-height:1.5}
   </div>
 </div>
 
-<!-- ===== 목록 페이지 ===== -->
 <div class="page" id="page-list">
   <div style="padding:12px">
+    <div class="sync-status" id="sync-status"></div>
     <div id="my-info-wrap"></div>
     <div class="chips">
       <button class="chip on" onclick="setFilter('to',this)">출근</button>
@@ -337,7 +274,6 @@ textarea{resize:none;height:60px;line-height:1.5}
   </div>
 </div>
 
-<!-- 하단 탭 -->
 <div class="bottom-tab">
   <button class="tab-btn on" id="tab-reg" onclick="switchTab('reg')">
     <span class="icon">✏️</span>등록
@@ -346,13 +282,23 @@ textarea{resize:none;height:60px;line-height:1.5}
     <span class="icon">🚗</span>카풀 찾기
   </button>
 </div>
-
 <div class="toast" id="toast"></div>
 
-<script>
-// =====================
-// 데이터
-// =====================
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCQ1ngsjDBKcyzFfTqus52pS4YCyyrq_Ec",
+  authDomain: "carpool-match-e7a6f.firebaseapp.com",
+  projectId: "carpool-match-e7a6f",
+  storageBucket: "carpool-match-e7a6f.firebasestorage.app",
+  messagingSenderId: "48799333274",
+  appId: "1:48799333274:web:80af43c782664cb4de9823"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 const DIST={
   '대전':{'유성구':['노은동','지족동','반석동','전민동','관평동','봉명동','죽동','장대동','구즉동','진잠동'],'서구':['둔산동','탄방동','월평동','갈마동','가수원동','도안동','괴정동','용문동','복수동'],'중구':['은행선화동','대흥동','문화동','오류동','태평동','유천동','산성동'],'동구':['판암동','용전동','인동','성남동','대동'],'대덕구':['오정동','신탄진동','석봉동','법동','중리동']},
   '세종':{'조치원읍':['조치원읍'],'한솔·도담':['한솔동','도담동','어진동'],'아름·종촌':['아름동','종촌동','고운동'],'보람·대평':['보람동','대평동'],'소담·반곡':['소담동','반곡동','나성동'],'새롬·다정':['새롬동','다정동'],'연서·연기면':['연서면','연기면']},
@@ -364,201 +310,112 @@ const DAYS=['일','월','화','수','목','금','토'];
 const GL={male:'남성',female:'여성',any:'무관'};
 const GATES=['1정문','2정문','3정문','본청','상관없음'];
 
-let role='driver', direction='to', seats=3, filter='to';
-let myGender='male', myPref='any';
-let editingId=null, myId=null, lastSaved=null;
-let currentStep=1;
+let role='driver',direction='to',seats=3,filter='to';
+let myGender='male',myPref='any';
+let editingId=null,myFirebaseId=null,lastSaved=null;
+let carpools=[],currentStep=1,unsubscribe=null;
 
-// localStorage 에서 불러오기
-let carpools = JSON.parse(localStorage.getItem('carpools')||'[]');
-let nextId = parseInt(localStorage.getItem('nextId')||'1');
-myId = localStorage.getItem('myId') ? parseInt(localStorage.getItem('myId')) : null;
-lastSaved = JSON.parse(localStorage.getItem('lastSaved')||'null');
+myFirebaseId=localStorage.getItem('myFirebaseId')||null;
+lastSaved=JSON.parse(localStorage.getItem('lastSaved')||'null');
 
-function saveToDB(){
-  localStorage.setItem('carpools', JSON.stringify(carpools));
-  localStorage.setItem('nextId', String(nextId));
-  if(myId) localStorage.setItem('myId', String(myId));
-  if(lastSaved) localStorage.setItem('lastSaved', JSON.stringify(lastSaved));
-}
-
-// 만료 데이터 정리
-function cleanExpired(){
-  const today=todayStr();
-  const before=carpools.length;
-  carpools=carpools.filter(c=>!c.date||c.date>=today);
-  if(carpools.length!==before) saveToDB();
-}
-
-// =====================
-// 유틸
-// =====================
 function todayStr(){return new Date().toISOString().split('T')[0];}
 function dayStr(s){if(!s)return '';const d=new Date(s+'T00:00:00');return DAYS[d.getDay()]+'요일';}
 function onDateChange(){document.getElementById('r-day').value=dayStr(document.getElementById('r-date').value);}
-
-function segSet(id,idx){
-  document.getElementById(id).querySelectorAll('button').forEach((b,i)=>{
-    if(i===idx){b.classList.add('on');}else{b.classList.remove('on');}
-  });
-}
-
+function setSyncStatus(msg,type=''){const el=document.getElementById('sync-status');if(!el)return;el.textContent=msg;el.className='sync-status'+(type?' '+type:'');}
+function segSet(id,idx){document.getElementById(id).querySelectorAll('button').forEach((b,i)=>{i===idx?b.classList.add('on'):b.classList.remove('on');});}
 function updateDist(type){
-  const c=document.getElementById('r-'+type+'-city');
-  const d=document.getElementById('r-'+type+'-dist');
+  const c=document.getElementById('r-'+type+'-city'),d=document.getElementById('r-'+type+'-dist');
   if(!c||!d)return;
   const city=c.value;
   if(!city||!DIST[city]){d.innerHTML='<option value="">-</option>';d.disabled=true;return;}
   d.innerHTML='<option value="">구/읍/면 선택</option>'+Object.keys(DIST[city]).map(k=>`<option>${k}</option>`).join('');
   d.disabled=false;
 }
-function setDistVal(type,v){
-  setTimeout(()=>{
-    const d=document.getElementById('r-'+type+'-dist');
-    if(d)for(let o of d.options)if(o.value===v){o.selected=true;break;}
-  },100);
-}
-function gateOpts(sel){
-  return '<option value="">선택</option>'+GATES.map(g=>`<option${g===sel?' selected':''}>${g}</option>`).join('');
-}
+function setDistVal(type,v){setTimeout(()=>{const d=document.getElementById('r-'+type+'-dist');if(d)for(let o of d.options)if(o.value===v){o.selected=true;break;}},100);}
+function gateOpts(sel){return '<option value="">선택</option>'+GATES.map(g=>`<option${g===sel?' selected':''}>${g}</option>`).join('');}
 function timeToMin(t){if(!t)return 0;const[h,m]=t.split(':').map(Number);return h*60+m;}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 
-// =====================
-// 스텝 이동
-// =====================
+async function addCarpool(data){
+  setSyncStatus('저장 중...','syncing');
+  const ref=await addDoc(collection(db,'carpools'),data);
+  setSyncStatus('저장됨 ✓');
+  return ref.id;
+}
+async function updateCarpool(fid,data){
+  setSyncStatus('수정 중...','syncing');
+  await updateDoc(doc(db,'carpools',fid),data);
+  setSyncStatus('수정됨 ✓');
+}
+async function deleteCarpool(fid){
+  await deleteDoc(doc(db,'carpools',fid));
+  setSyncStatus('삭제됨');
+}
+
+function startListener(){
+  if(unsubscribe)unsubscribe();
+  const today=todayStr();
+  unsubscribe=onSnapshot(query(collection(db,'carpools'),orderBy('ts','desc')),(snap)=>{
+    carpools=snap.docs.map(d=>({...d.data(),firebaseId:d.id})).filter(c=>!c.date||c.date>=today);
+    setSyncStatus('🟢 실시간 동기화 중');
+    renderListPage();
+  },(err)=>{setSyncStatus('연결 오류 — 새로고침 해주세요','error');});
+}
+
 function goStep(n){
-  // 유효성 검사
   if(n>1){
-    const name=document.getElementById('r-name').value.trim();
-    if(!name){showToast('이름을 입력해주세요');return;}
-    if(role==='driver'){
-      const c=document.getElementById('r-contact').value.trim();
-      if(!c){showToast('연락처를 입력해주세요');return;}
-    }
+    if(!document.getElementById('r-name').value.trim()){showToast('이름을 입력해주세요');return;}
+    if(role==='driver'&&!document.getElementById('r-contact').value.trim()){showToast('연락처를 입력해주세요');return;}
   }
   if(n>2){
     if(direction==='to'){
-      const sc=document.getElementById('r-start-city')?.value||'';
-      const sd=document.getElementById('r-start-dist')?.value||'';
-      const eg=document.getElementById('r-end-gate')?.value||'';
-      if(!sc||!sd){showToast('출발지를 선택해주세요');return;}
-      if(!eg){showToast('목적지 정문을 선택해주세요');return;}
+      if(!document.getElementById('r-start-city')?.value){showToast('출발지를 선택해주세요');return;}
+      if(!document.getElementById('r-start-dist')?.value){showToast('세부 지역을 선택해주세요');return;}
+      if(!document.getElementById('r-end-gate')?.value){showToast('목적지 정문을 선택해주세요');return;}
     } else {
-      const sg=document.getElementById('r-start-gate')?.value||'';
-      const ec=document.getElementById('r-end-city')?.value||'';
-      const ed=document.getElementById('r-end-dist')?.value||'';
-      if(!sg){showToast('출발 정문을 선택해주세요');return;}
-      if(!ec||!ed){showToast('목적지를 선택해주세요');return;}
+      if(!document.getElementById('r-start-gate')?.value){showToast('출발 정문을 선택해주세요');return;}
+      if(!document.getElementById('r-end-city')?.value){showToast('목적지를 선택해주세요');return;}
+      if(!document.getElementById('r-end-dist')?.value){showToast('세부 지역을 선택해주세요');return;}
     }
   }
   currentStep=n;
-  document.getElementById('step1').style.display=n===1?'block':'none';
-  document.getElementById('step2').style.display=n===2?'block':'none';
-  document.getElementById('step3').style.display=n===3?'block':'none';
-  // 스텝 인디케이터 업데이트
   [1,2,3].forEach(i=>{
-    const sc=document.getElementById('sc'+i);
-    const sl=document.getElementById('sl'+i);
-    sc.classList.toggle('done',i<n);
-    sc.classList.toggle('active',i===n);
-    sl.classList.toggle('active',i===n);
-    if(i<3){
-      const line=document.getElementById('line'+i);
-      line.classList.toggle('done',i<n);
-    }
+    document.getElementById('step'+i).style.display=i===n?'block':'none';
+    document.getElementById('sc'+i).classList.toggle('done',i<n);
+    document.getElementById('sc'+i).classList.toggle('active',i===n);
+    document.getElementById('sl'+i).classList.toggle('active',i===n);
+    if(i<3)document.getElementById('line'+i).classList.toggle('done',i<n);
   });
   window.scrollTo(0,0);
 }
 
-// =====================
-// 탭 전환
-// =====================
 function switchTab(t){
   document.getElementById('page-reg').classList.toggle('on',t==='reg');
   document.getElementById('page-list').classList.toggle('on',t==='list');
   document.getElementById('tab-reg').classList.toggle('on',t==='reg');
   document.getElementById('tab-list').classList.toggle('on',t==='list');
-  if(t==='list'){cleanExpired();renderListPage();}
+  if(t==='list'){if(!unsubscribe)startListener();else renderListPage();}
   window.scrollTo(0,0);
 }
 
-// =====================
-// 기본 정보 세터
-// =====================
-function setRole(r,idx){
-  role=r;segSet('role-seg',idx);
-  document.getElementById('contact-wrap').style.display=r==='driver'?'block':'none';
-  document.getElementById('via-wrap').style.display=r==='driver'?'block':'none';
-  document.getElementById('seat-wrap').style.display=r==='driver'?'block':'none';
-  document.getElementById('pref-label').textContent=r==='driver'?'탑승 희망자 성별':'운전 희망자 성별';
-  document.getElementById('btn-submit').textContent=r==='passenger'?'카풀 매칭하기':'등록하기';
-}
+function setRole(r,idx){role=r;segSet('role-seg',idx);document.getElementById('contact-wrap').style.display=r==='driver'?'block':'none';document.getElementById('via-wrap').style.display=r==='driver'?'block':'none';document.getElementById('seat-wrap').style.display=r==='driver'?'block':'none';document.getElementById('pref-label').textContent=r==='driver'?'탑승 희망자 성별':'운전 희망자 성별';document.getElementById('btn-submit').textContent=r==='passenger'?'카풀 매칭하기':'등록하기';}
 function setGender(g,idx){myGender=g;segSet('gender-seg',idx);}
 function setPref(g,idx){myPref=g;segSet('pref-seg',idx);}
 function setDir(d,idx){direction=d;segSet('dir-seg',idx);renderStartWrap();renderEndWrap();}
 function chSeat(d){seats=Math.max(1,Math.min(6,seats+d));document.getElementById('seat-n').textContent=seats;}
 function setFilter(f,el){filter=f;document.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));el.classList.add('on');renderListPage();}
 
-// =====================
-// 경로 렌더
-// =====================
 function renderStartWrap(){
   const w=document.getElementById('start-wrap');if(!w)return;
-  if(direction==='to'){
-    w.innerHTML=`<div class="loc-wrap">
-      <div class="loc-title">출발지</div>
-      <div class="loc-row">
-        <div class="fg"><label>권역</label>
-          <select id="r-start-city" onchange="updateDist('start')">
-            <option value="">권역 선택</option>
-            <option>대전</option><option>세종</option><option>논산</option><option>공주</option><option>계룡</option>
-          </select></div>
-        <div class="fg"><label>세부 지역</label>
-          <select id="r-start-dist" disabled><option value="">먼저 권역 선택</option></select></div>
-      </div>
-      <div class="fg" style="margin-bottom:0">
-        <label>상세 주소 <span style="font-size:11px;color:#bbb">(선택)</span></label>
-        <input id="r-start-addr" type="text" placeholder="예) 노은역 4번 출구, 롯데마트 앞">
-        <span class="hint">탑승자 참고용 — 매칭 점수에는 반영되지 않습니다</span>
-      </div>
-    </div>`;
-  } else {
-    w.innerHTML=`<div class="loc-wrap">
-      <div class="loc-title">출발 정문</div>
-      <select id="r-start-gate" style="width:100%">${gateOpts('')}</select>
-    </div>`;
-  }
+  if(direction==='to'){w.innerHTML=`<div class="loc-wrap"><div class="loc-title">출발지</div><div class="loc-row"><div class="fg"><label>권역</label><select id="r-start-city" onchange="updateDist('start')"><option value="">권역 선택</option><option>대전</option><option>세종</option><option>논산</option><option>공주</option><option>계룡</option></select></div><div class="fg"><label>세부 지역</label><select id="r-start-dist" disabled><option value="">먼저 권역 선택</option></select></div></div><div class="fg" style="margin-bottom:0"><label>상세 주소 <span style="font-size:11px;color:#bbb">(선택)</span></label><input id="r-start-addr" type="text" placeholder="예) 노은역 4번 출구, 롯데마트 앞"><span class="hint">탑승자 참고용</span></div></div>`;}
+  else{w.innerHTML=`<div class="loc-wrap"><div class="loc-title">출발 정문</div><select id="r-start-gate" style="width:100%">${gateOpts('')}</select></div>`;}
 }
 function renderEndWrap(){
   const w=document.getElementById('end-wrap');if(!w)return;
-  if(direction==='to'){
-    w.innerHTML=`<div class="loc-wrap" style="margin-bottom:0">
-      <div class="loc-title">목적지 (정문)</div>
-      <select id="r-end-gate" style="width:100%">${gateOpts('')}</select>
-    </div>`;
-  } else {
-    w.innerHTML=`<div class="loc-wrap" style="margin-bottom:0">
-      <div class="loc-title">목적지</div>
-      <div class="loc-row">
-        <div class="fg"><label>권역</label>
-          <select id="r-end-city" onchange="updateDist('end')">
-            <option value="">권역 선택</option>
-            <option>대전</option><option>세종</option><option>논산</option><option>공주</option><option>계룡</option>
-          </select></div>
-        <div class="fg"><label>세부 지역</label>
-          <select id="r-end-dist" disabled><option value="">먼저 권역 선택</option></select></div>
-      </div>
-      <div class="fg" style="margin-bottom:0">
-        <label>상세 주소 <span style="font-size:11px;color:#bbb">(선택)</span></label>
-        <input id="r-end-addr" type="text" placeholder="예) 아파트 정문, 버스터미널 앞">
-      </div>
-    </div>`;
-  }
+  if(direction==='to'){w.innerHTML=`<div class="loc-wrap" style="margin-bottom:0"><div class="loc-title">목적지 (정문)</div><select id="r-end-gate" style="width:100%">${gateOpts('')}</select></div>`;}
+  else{w.innerHTML=`<div class="loc-wrap" style="margin-bottom:0"><div class="loc-title">목적지</div><div class="loc-row"><div class="fg"><label>권역</label><select id="r-end-city" onchange="updateDist('end')"><option value="">권역 선택</option><option>대전</option><option>세종</option><option>논산</option><option>공주</option><option>계룡</option></select></div><div class="fg"><label>세부 지역</label><select id="r-end-dist" disabled><option value="">먼저 권역 선택</option></select></div></div><div class="fg" style="margin-bottom:0"><label>상세 주소 <span style="font-size:11px;color:#bbb">(선택)</span></label><input id="r-end-addr" type="text" placeholder="예) 아파트 정문, 버스터미널 앞"></div></div>`;}
 }
 
-// =====================
-// 매칭 계산
-// =====================
 function calcMatch(driver,passenger){
   if(driver.dir!==passenger.dir||driver.status==='closed')return null;
   if(driver.date&&passenger.date&&driver.date!==passenger.date)return null;
@@ -566,176 +423,56 @@ function calcMatch(driver,passenger){
   const dCity=driver.dir==='to'?driver.startCity:driver.endCity;
   const pCity=passenger.dir==='to'?passenger.startCity:passenger.endCity;
   const dCities=[dCity,driver.viaCity].filter(Boolean);
-  const gm=driver.dir==='to'
-    ?(driver.endGate===passenger.endGate&&driver.endGate!=='상관없음')
-    :(driver.startGate===passenger.startGate&&driver.startGate!=='상관없음');
+  const gm=driver.dir==='to'?(driver.endGate===passenger.endGate&&driver.endGate!=='상관없음'):(driver.startGate===passenger.startGate&&driver.startGate!=='상관없음');
   if(!dCities.includes(pCity)&&!gm)return null;
-  if(dCity===pCity){
-    score+=35;
-    const dD=driver.dir==='to'?driver.startDist:driver.endDist;
-    const pD=passenger.dir==='to'?passenger.startDist:passenger.endDist;
-    if(dD===pD){score+=15;reasons.push('동일 지역');}else reasons.push('같은 권역');
-  } else if(driver.viaCity===pCity){score+=20;reasons.push('경유지 포함');}
+  if(dCity===pCity){score+=35;const dD=driver.dir==='to'?driver.startDist:driver.endDist;const pD=passenger.dir==='to'?passenger.startDist:passenger.endDist;if(dD===pD){score+=15;reasons.push('동일 지역');}else reasons.push('같은 권역');}
+  else if(driver.viaCity===pCity){score+=20;reasons.push('경유지 포함');}
   if(gm){score+=15;reasons.push('같은 정문');}
   const diff=Math.abs(timeToMin(driver.depart)-timeToMin(passenger.depart));
-  if(diff<=15){score+=25;reasons.push('출발시간 거의 동일');}
-  else if(diff<=30){score+=18;reasons.push('출발시간 30분 이내');}
-  else if(diff<=60){score+=8;reasons.push('출발시간 1시간 이내');}
+  if(diff<=15){score+=25;reasons.push('출발시간 거의 동일');}else if(diff<=30){score+=18;reasons.push('출발시간 30분 이내');}else if(diff<=60){score+=8;reasons.push('출발시간 1시간 이내');}
   if(driver.seats>0)score+=5;
   score=Math.min(score,99);
   return score<20?null:{score,reason:reasons.slice(0,2).join(' · ')||'경로 부분 겹침'};
 }
-function genderOk(driver,me){
-  if(!me)return true;
-  if(driver.pref!=='any'&&driver.pref!==me.gender)return false;
-  if(me.pref!=='any'&&me.pref!==driver.gender)return false;
-  return true;
-}
+function genderOk(driver,me){if(!me)return true;if(driver.pref!=='any'&&driver.pref!==me.gender)return false;if(me.pref!=='any'&&me.pref!==driver.gender)return false;return true;}
+function routeLabel(c){const s=c.dir==='to'?(c.startCity+' '+c.startDist):(c.startGate||'');const e=c.dir==='to'?(c.endGate||''):(c.endCity+' '+(c.endDist||''));const via=c.viaCity&&c.viaDist?` <span style="color:#bbb;font-size:12px">›</span> ${c.viaCity} ${c.viaDist}`:'';return `${s}${via} <span style="color:#bbb;font-size:12px">→</span> ${e}`;}
 
-// =====================
-// 라우트 레이블
-// =====================
-function routeLabel(c){
-  const s=c.dir==='to'?(c.startCity+' '+c.startDist):(c.startGate||'');
-  const e=c.dir==='to'?(c.endGate||''):(c.endCity+' '+(c.endDist||''));
-  const via=c.viaCity&&c.viaDist?` <span style="color:#bbb;font-size:12px">›</span> ${c.viaCity} ${c.viaDist}`:'';
-  return `${s}${via} <span style="color:#bbb;font-size:12px">→</span> ${e}`;
-}
+async function toggleStatus(fid){const c=carpools.find(x=>x.firebaseId===fid);if(!c)return;const ns=c.status==='open'?'closed':'open';await updateCarpool(fid,{status:ns});showToast(ns==='closed'?'마감으로 변경됐어요':'모집중으로 변경됐어요');}
 
-// =====================
-// 마감 토글
-// =====================
-function toggleStatus(id){
-  const c=carpools.find(x=>x.id===id);if(!c)return;
-  c.status=c.status==='open'?'closed':'open';
-  saveToDB();
-  renderMyCard();renderListPage();
-  showToast(c.status==='closed'?'마감으로 변경됐어요':'모집중으로 변경됐어요');
-}
-
-// =====================
-// 내 카드 렌더
-// =====================
 function renderMyCard(){
   const w=document.getElementById('my-info-wrap');
-  const c=myId?carpools.find(x=>x.id===myId):null;
-  if(!c){
-    w.innerHTML=`<div class="no-my"><span>내 정보를 등록하면 매칭 적합도가 표시됩니다</span><button onclick="switchTab('reg')">등록하기</button></div>`;
-    return;
-  }
+  const c=myFirebaseId?carpools.find(x=>x.firebaseId===myFirebaseId):null;
+  if(!c){w.innerHTML=`<div class="no-my"><span>내 정보를 등록하면 매칭 적합도가 표시됩니다</span><button onclick="switchTab('reg')">등록하기</button></div>`;return;}
   const isOpen=c.status==='open';
-  w.innerHTML=`<div class="my-card">
-    <div class="my-hd">
-      <div>
-        <div class="my-title">내 등록 (${c.role==='driver'?'운전자':'탑승자'} · ${c.dir==='to'?'출근':'퇴근'})</div>
-        <div class="my-date">${c.date} ${dayStr(c.date)}</div>
-      </div>
-      <div class="my-btns">
-        ${c.role==='driver'?`<button class="btn-sm ${isOpen?'btn-close-rec':'btn-reopen'}" onclick="toggleStatus(${c.id})">${isOpen?'마감':'모집중'}</button>`:''}
-        <button class="btn-sm btn-edit" onclick="editCard(${c.id})">수정</button>
-        <button class="btn-sm btn-del" onclick="delMyCard(${c.id})">삭제</button>
-      </div>
-    </div>
-    <div class="my-route">${routeLabel(c)}</div>
-    ${(c.dir==='to'&&c.startAddr)||(c.dir==='from'&&c.endAddr)?
-      `<div style="font-size:11px;color:#aaa;margin-bottom:4px">📍 ${c.dir==='to'?c.startAddr:c.endAddr}</div>`:''}
-    <div class="my-meta">
-      <span class="status-badge ${isOpen?'status-open':'status-closed'}">${isOpen?'모집중':'마감'}</span>
-      <span>🕐 ${c.depart}→${c.arrive}</span>
-      ${c.role==='driver'?`<span>👤 ${c.seats}석</span>`:''}
-      <span>${GL[c.gender]} · 희망 ${GL[c.pref]}</span>
-    </div>
-  </div>`;
+  w.innerHTML=`<div class="my-card"><div class="my-hd"><div><div class="my-title">내 등록 (${c.role==='driver'?'운전자':'탑승자'} · ${c.dir==='to'?'출근':'퇴근'})</div><div class="my-date">${c.date} ${dayStr(c.date)}</div></div><div class="my-btns">${c.role==='driver'?`<button class="btn-sm ${isOpen?'btn-close-rec':'btn-reopen'}" onclick="toggleStatus('${c.firebaseId}')">${isOpen?'마감':'모집중'}</button>`:''}<button class="btn-sm btn-edit" onclick="editCard('${c.firebaseId}')">수정</button><button class="btn-sm btn-del" onclick="delMyCard('${c.firebaseId}')">삭제</button></div></div><div class="my-route">${routeLabel(c)}</div>${(c.dir==='to'&&c.startAddr)||(c.dir==='from'&&c.endAddr)?`<div style="font-size:11px;color:#aaa;margin-bottom:4px">📍 ${c.dir==='to'?c.startAddr:c.endAddr}</div>`:''}<div class="my-meta"><span class="status-badge ${isOpen?'status-open':'status-closed'}">${isOpen?'모집중':'마감'}</span><span>🕐 ${c.depart}→${c.arrive}</span>${c.role==='driver'?`<span>👤 ${c.seats}석</span>`:''}<span>${GL[c.gender]} · 희망 ${GL[c.pref]}</span></div></div>`;
 }
 
-// =====================
-// 운전자 카드 렌더
-// =====================
 function driverCardHTML(c,matchInfo,gOk,me){
   const isClosed=c.status==='closed';
   const addr=(c.dir==='to'&&c.startAddr)?c.startAddr:(c.dir==='from'&&c.endAddr)?c.endAddr:'';
   const via=c.viaCity&&c.viaDist?`경유: ${c.viaCity} ${c.viaDist}`:'';
   const dimClass=isClosed?'closed':(me&&(!gOk||!matchInfo))?'dimmed':'';
   const gBdg=c.gender==='female'?'bdg-f':'bdg-m';
-  return `<div class="ccard ${dimClass}" id="card-${c.id}">
-    <div class="ch">
-      <div class="cname-wrap">
-        <div class="cname">${c.name}
-          <span class="status-badge ${isClosed?'status-closed':'status-open'}" style="font-size:10px">${isClosed?'마감':'모집중'}</span>
-        </div>
-        <div class="cdate">${c.date} ${dayStr(c.date)}</div>
-      </div>
-      <div class="cbadges">
-        <span class="bdg bdg-dir">${c.dir==='to'?'출근':'퇴근'}</span>
-        <span class="bdg ${gBdg}">${GL[c.gender]}</span>
-        ${c.pref!=='any'?`<span class="bdg bdg-pref">${GL[c.pref]} 희망</span>`:''}
-      </div>
-    </div>
-    <div class="croute">${routeLabel(c)}</div>
-    ${addr||via?`<div class="caddr">${addr?'📍 '+addr:''}${addr&&via?' · ':''}${via}</div>`:''}
-    <div class="cmeta"><span>🕐 ${c.depart}→${c.arrive}</span><span>👤 ${c.seats}석</span></div>
-    ${c.note?`<div class="cnote">${c.note}</div>`:''}
-    ${!isClosed&&matchInfo?`<div class="match-box">
-      <div class="match-hd">매칭 적합도</div>
-      <div class="mscore-row">
-        <span style="font-size:13px;font-weight:500">이 운전자와의 매칭</span>
-        <span class="mscore-num">${matchInfo.score}점</span>
-      </div>
-      <div class="mwhy">${matchInfo.reason}${!gOk?' · 성별 조건 불일치':''}</div>
-      <div class="sbar"><div class="sfill" style="width:${matchInfo.score}%"></div></div>
-    </div>`:''}
-    ${!isClosed&&me&&!gOk?`<div class="gender-warn">성별 조건이 맞지 않아요</div>`:''}
-    ${isClosed
-      ?`<div class="closed-msg">매칭 완료된 카풀입니다</div>`
-      :`<button class="btn-contact" onclick="copyContact(${c.id})">연락하기 (연락처 복사)</button>`
-    }
-  </div>`;
+  const ce=(c.contact||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  return `<div class="ccard ${dimClass}"><div class="ch"><div class="cname-wrap"><div class="cname">${c.name} <span class="status-badge ${isClosed?'status-closed':'status-open'}" style="font-size:10px">${isClosed?'마감':'모집중'}</span></div><div class="cdate">${c.date} ${dayStr(c.date)}</div></div><div class="cbadges"><span class="bdg bdg-dir">${c.dir==='to'?'출근':'퇴근'}</span><span class="bdg ${gBdg}">${GL[c.gender]}</span>${c.pref!=='any'?`<span class="bdg bdg-pref">${GL[c.pref]} 희망</span>`:''}</div></div><div class="croute">${routeLabel(c)}</div>${addr||via?`<div class="caddr">${addr?'📍 '+addr:''}${addr&&via?' · ':''}${via}</div>`:''}<div class="cmeta"><span>🕐 ${c.depart}→${c.arrive}</span><span>👤 ${c.seats}석</span></div>${c.note?`<div class="cnote">${c.note}</div>`:''}${!isClosed&&matchInfo?`<div class="match-box"><div class="match-hd">매칭 적합도</div><div class="mscore-row"><span style="font-size:13px;font-weight:500">이 운전자와의 매칭</span><span class="mscore-num">${matchInfo.score}점</span></div><div class="mwhy">${matchInfo.reason}${!gOk?' · 성별 조건 불일치':''}</div><div class="sbar"><div class="sfill" style="width:${matchInfo.score}%"></div></div></div>`:''}${!isClosed&&me&&!gOk?`<div class="gender-warn">성별 조건이 맞지 않아요</div>`:''} ${isClosed?`<div class="closed-msg">매칭 완료된 카풀입니다</div>`:`<button class="btn-contact" onclick="copyContact('${ce}')">연락하기 (연락처 복사)</button>`}</div>`;
 }
 
-function copyContact(id){
-  const c=carpools.find(x=>x.id===id);if(!c)return;
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(c.contact).then(()=>showToast('연락처가 복사됐어요!'));
-  } else {
-    showToast('연락처: '+c.contact);
-  }
-}
+function copyContact(contact){if(navigator.clipboard){navigator.clipboard.writeText(contact).then(()=>showToast('연락처가 복사됐어요!'));}else{showToast('연락처: '+contact);}}
 
-// =====================
-// 목록 렌더
-// =====================
 function renderListPage(){
-  cleanExpired();
   renderMyCard();
   const el=document.getElementById('list-wrap');
-  let data=carpools.filter(x=>x.role==='driver'&&x.dir===filter&&x.id!==myId);
-  if(!data.length){
-    el.innerHTML=`<div class="empty"><div class="icon">🚗</div><p>등록된 운전자가 없어요.<br>첫 번째로 등록해보세요!</p></div>`;
-    return;
-  }
-  const me=myId?carpools.find(x=>x.id===myId):null;
-  const scored=data.map(d=>({...d,
-    matchInfo:me&&me.dir===d.dir?calcMatch(d,me):null,
-    gOk:genderOk(d,me)
-  }));
-  scored.sort((a,b)=>{
-    if(a.status==='closed'&&b.status!=='closed')return 1;
-    if(b.status==='closed'&&a.status!=='closed')return -1;
-    if(me){if(a.gOk!==b.gOk)return a.gOk?-1:1;}
-    return (b.matchInfo?.score||0)-(a.matchInfo?.score||0);
-  });
+  let data=carpools.filter(x=>x.role==='driver'&&x.dir===filter&&x.firebaseId!==myFirebaseId);
+  if(!data.length){el.innerHTML=`<div class="empty"><div class="icon">🚗</div><p>등록된 운전자가 없어요.<br>첫 번째로 등록해보세요!</p></div>`;return;}
+  const me=myFirebaseId?carpools.find(x=>x.firebaseId===myFirebaseId):null;
+  const scored=data.map(d=>({...d,matchInfo:me&&me.dir===d.dir?calcMatch(d,me):null,gOk:genderOk(d,me)}));
+  scored.sort((a,b)=>{if(a.status==='closed'&&b.status!=='closed')return 1;if(b.status==='closed'&&a.status!=='closed')return -1;if(me){if(a.gOk!==b.gOk)return a.gOk?-1:1;}return(b.matchInfo?.score||0)-(a.matchInfo?.score||0);});
   el.innerHTML=scored.map(c=>driverCardHTML(c,c.matchInfo,c.gOk,me)).join('');
 }
 
-// =====================
-// 폼 채우기
-// =====================
-function fillForm(c, skipDate){
+function fillForm(c,skipDate){
   role=c.role;myGender=c.gender||'male';myPref=c.pref||'any';direction=c.dir;
-  segSet('role-seg',c.role==='driver'?0:1);
-  segSet('gender-seg',myGender==='male'?0:1);
-  segSet('pref-seg',myPref==='any'?0:myPref==='male'?1:2);
-  segSet('dir-seg',c.dir==='to'?0:1);
+  segSet('role-seg',c.role==='driver'?0:1);segSet('gender-seg',myGender==='male'?0:1);segSet('pref-seg',myPref==='any'?0:myPref==='male'?1:2);segSet('dir-seg',c.dir==='to'?0:1);
   document.getElementById('contact-wrap').style.display=c.role==='driver'?'block':'none';
   document.getElementById('via-wrap').style.display=c.role==='driver'?'block':'none';
   document.getElementById('seat-wrap').style.display=c.role==='driver'?'block':'none';
@@ -745,160 +482,63 @@ function fillForm(c, skipDate){
   const rc=document.getElementById('r-contact');if(rc)rc.value=c.contact||'';
   renderStartWrap();renderEndWrap();
   const dateVal=skipDate?todayStr():(c.date||todayStr());
-  document.getElementById('r-date').value=dateVal;
-  document.getElementById('r-day').value=dayStr(dateVal);
+  document.getElementById('r-date').value=dateVal;document.getElementById('r-day').value=dayStr(dateVal);
   setTimeout(()=>{
-    if(c.dir==='to'){
-      const sc=document.getElementById('r-start-city');if(sc){sc.value=c.startCity||'';updateDist('start');}
-      setDistVal('start',c.startDist||'');
-      setTimeout(()=>{
-        const sa=document.getElementById('r-start-addr');if(sa)sa.value=c.startAddr||'';
-        const eg=document.getElementById('r-end-gate');if(eg)eg.value=c.endGate||'';
-      },120);
-    } else {
-      const sg=document.getElementById('r-start-gate');if(sg)sg.value=c.startGate||'';
-      const ec=document.getElementById('r-end-city');if(ec){ec.value=c.endCity||'';updateDist('end');}
-      setDistVal('end',c.endDist||'');
-      setTimeout(()=>{const ea=document.getElementById('r-end-addr');if(ea)ea.value=c.endAddr||'';},120);
-    }
-    if(c.role==='driver'&&c.viaCity){
-      const vc=document.getElementById('r-via-city');if(vc){vc.value=c.viaCity;updateDist('via');}
-      setDistVal('via',c.viaDist||'');
-    }
+    if(c.dir==='to'){const sc=document.getElementById('r-start-city');if(sc){sc.value=c.startCity||'';updateDist('start');}setDistVal('start',c.startDist||'');setTimeout(()=>{const sa=document.getElementById('r-start-addr');if(sa)sa.value=c.startAddr||'';const eg=document.getElementById('r-end-gate');if(eg)eg.value=c.endGate||'';},120);}
+    else{const sg=document.getElementById('r-start-gate');if(sg)sg.value=c.startGate||'';const ec=document.getElementById('r-end-city');if(ec){ec.value=c.endCity||'';updateDist('end');}setDistVal('end',c.endDist||'');setTimeout(()=>{const ea=document.getElementById('r-end-addr');if(ea)ea.value=c.endAddr||'';},120);}
+    if(c.role==='driver'&&c.viaCity){const vc=document.getElementById('r-via-city');if(vc){vc.value=c.viaCity;updateDist('via');}setDistVal('via',c.viaDist||'');}
   },40);
-  document.getElementById('r-depart').value=c.depart||'07:30';
-  document.getElementById('r-arrive').value=c.arrive||'08:00';
-  document.getElementById('r-note').value=c.note||'';
-  seats=c.seats||3;document.getElementById('seat-n').textContent=seats;
+  document.getElementById('r-depart').value=c.depart||'07:30';document.getElementById('r-arrive').value=c.arrive||'08:00';document.getElementById('r-note').value=c.note||'';seats=c.seats||3;document.getElementById('seat-n').textContent=seats;
 }
 
-function recallLast(){
-  if(!lastSaved)return;
-  fillForm(lastSaved,true);
-  document.getElementById('banner-recall').style.display='block';
-  document.getElementById('btn-recall').style.display='none';
-  showToast('이전 정보를 불러왔어요');
-}
+function recallLast(){if(!lastSaved)return;fillForm(lastSaved,true);document.getElementById('banner-recall').style.display='block';document.getElementById('btn-recall').style.display='none';showToast('이전 정보를 불러왔어요');}
 
-function editCard(id){
-  const c=carpools.find(x=>x.id===id);if(!c)return;
-  editingId=id;
-  switchTab('reg');
-  document.getElementById('banner-edit').style.display='block';
-  document.getElementById('btn-cancel').style.display='block';
-  document.getElementById('btn-recall').style.display='none';
-  fillForm(c,false);
-  goStep(1);
-  showToast('수정할 내용을 변경 후 저장하세요');
-}
+function editCard(fid){const c=carpools.find(x=>x.firebaseId===fid);if(!c)return;editingId=fid;switchTab('reg');document.getElementById('banner-edit').style.display='block';document.getElementById('btn-cancel').style.display='block';document.getElementById('btn-recall').style.display='none';fillForm(c,false);goStep(1);showToast('수정할 내용을 변경 후 저장하세요');}
 
-function cancelEdit(){
-  editingId=null;resetForm();
-  document.getElementById('banner-edit').style.display='none';
-  document.getElementById('banner-recall').style.display='none';
-  document.getElementById('btn-cancel').style.display='none';
-  document.getElementById('btn-recall').style.display=lastSaved?'block':'none';
-}
+function cancelEdit(){editingId=null;resetForm();document.getElementById('banner-edit').style.display='none';document.getElementById('banner-recall').style.display='none';document.getElementById('btn-cancel').style.display='none';document.getElementById('btn-recall').style.display=lastSaved?'block':'none';}
 
 function resetForm(){
   ['r-name','r-contact','r-note'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   role='driver';seats=3;direction='to';myGender='male';myPref='any';editingId=null;
   segSet('role-seg',0);segSet('dir-seg',0);segSet('gender-seg',0);segSet('pref-seg',0);
-  document.getElementById('contact-wrap').style.display='block';
-  document.getElementById('via-wrap').style.display='block';
-  document.getElementById('seat-wrap').style.display='block';
-  document.getElementById('pref-label').textContent='탑승 희망자 성별';
-  document.getElementById('btn-submit').textContent='등록하기';
-  document.getElementById('seat-n').textContent='3';
-  document.getElementById('r-depart').value='07:30';
-  document.getElementById('r-arrive').value='08:00';
-  document.getElementById('r-date').value=todayStr();
-  document.getElementById('r-day').value=dayStr(todayStr());
-  document.getElementById('banner-recall').style.display='none';
-  document.getElementById('btn-recall').style.display=lastSaved?'block':'none';
-  const vd=document.getElementById('r-via-dist');if(vd){vd.innerHTML='<option value="">-</option>';vd.disabled=true;}
-  document.getElementById('r-via-city').value='';
-  renderStartWrap();renderEndWrap();
-  goStep(1);
+  document.getElementById('contact-wrap').style.display='block';document.getElementById('via-wrap').style.display='block';document.getElementById('seat-wrap').style.display='block';
+  document.getElementById('pref-label').textContent='탑승 희망자 성별';document.getElementById('btn-submit').textContent='등록하기';document.getElementById('seat-n').textContent='3';
+  document.getElementById('r-depart').value='07:30';document.getElementById('r-arrive').value='08:00';document.getElementById('r-date').value=todayStr();document.getElementById('r-day').value=dayStr(todayStr());
+  document.getElementById('banner-recall').style.display='none';document.getElementById('btn-recall').style.display=lastSaved?'block':'none';
+  const vd=document.getElementById('r-via-dist');if(vd){vd.innerHTML='<option value="">-</option>';vd.disabled=true;}document.getElementById('r-via-city').value='';
+  renderStartWrap();renderEndWrap();goStep(1);
 }
 
-// =====================
-// 등록 제출
-// =====================
-function submitReg(){
-  const date=document.getElementById('r-date').value;
-  if(!date){showToast('날짜를 선택해주세요');return;}
-  let startCity='',startDist='',startAddr='',startGate='';
-  let endCity='',endDist='',endAddr='',endGate='';
-  if(direction==='to'){
-    startCity=document.getElementById('r-start-city')?.value||'';
-    startDist=document.getElementById('r-start-dist')?.value||'';
-    startAddr=document.getElementById('r-start-addr')?.value.trim()||'';
-    endGate=document.getElementById('r-end-gate')?.value||'';
-  } else {
-    startGate=document.getElementById('r-start-gate')?.value||'';
-    endCity=document.getElementById('r-end-city')?.value||'';
-    endDist=document.getElementById('r-end-dist')?.value||'';
-    endAddr=document.getElementById('r-end-addr')?.value.trim()||'';
-  }
+async function submitReg(){
+  const date=document.getElementById('r-date').value;if(!date){showToast('날짜를 선택해주세요');return;}
+  let startCity='',startDist='',startAddr='',startGate='',endCity='',endDist='',endAddr='',endGate='';
+  if(direction==='to'){startCity=document.getElementById('r-start-city')?.value||'';startDist=document.getElementById('r-start-dist')?.value||'';startAddr=document.getElementById('r-start-addr')?.value.trim()||'';endGate=document.getElementById('r-end-gate')?.value||'';}
+  else{startGate=document.getElementById('r-start-gate')?.value||'';endCity=document.getElementById('r-end-city')?.value||'';endDist=document.getElementById('r-end-dist')?.value||'';endAddr=document.getElementById('r-end-addr')?.value.trim()||'';}
   const viaCity=role==='driver'?(document.getElementById('r-via-city')?.value||''):'';
   const viaDist=role==='driver'?(document.getElementById('r-via-dist')?.value||''):'';
-  const name=document.getElementById('r-name').value.trim();
-  const contact=role==='driver'?(document.getElementById('r-contact')?.value.trim()||''):'';
-  const obj={name,contact,role,dir:direction,date,gender:myGender,pref:myPref,
-    startCity,startDist,startAddr,startGate,viaCity,viaDist,
-    endCity,endDist,endAddr,endGate,
-    depart:document.getElementById('r-depart').value,
-    arrive:document.getElementById('r-arrive').value,
-    seats:role==='driver'?seats:0,
-    note:document.getElementById('r-note').value.trim(),
-    status:'open',ts:Date.now()};
-  lastSaved={...obj};
-  if(editingId!==null){
-    const idx=carpools.findIndex(x=>x.id===editingId);
-    if(idx>-1)carpools[idx]={...carpools[idx],...obj,status:carpools[idx].status};
-    saveToDB();
-    showToast('수정 완료!');cancelEdit();switchTab('list');
-  } else {
-    const newId=nextId++;
-    carpools.unshift({id:newId,...obj});
-    myId=newId;
-    saveToDB();
-    showToast('등록 완료!');resetForm();switchTab('list');
-  }
+  const obj={name:document.getElementById('r-name').value.trim(),contact:role==='driver'?(document.getElementById('r-contact')?.value.trim()||''):'',role,dir:direction,date,gender:myGender,pref:myPref,startCity,startDist,startAddr,startGate,viaCity,viaDist,endCity,endDist,endAddr,endGate,depart:document.getElementById('r-depart').value,arrive:document.getElementById('r-arrive').value,seats:role==='driver'?seats:0,note:document.getElementById('r-note').value.trim(),status:'open',ts:Date.now()};
+  lastSaved={...obj};localStorage.setItem('lastSaved',JSON.stringify(lastSaved));
+  try{
+    if(editingId){await updateCarpool(editingId,obj);showToast('수정 완료!');cancelEdit();}
+    else{const nid=await addCarpool(obj);myFirebaseId=nid;localStorage.setItem('myFirebaseId',nid);showToast('등록 완료!');resetForm();}
+    switchTab('list');
+  }catch(e){showToast('저장 실패 — 네트워크를 확인해주세요');}
 }
 
-function delMyCard(id){
-  const c=carpools.find(x=>x.id===id);
-  if(c)lastSaved={...c};
-  carpools=carpools.filter(x=>x.id!==id);
-  if(myId===id)myId=null;
-  localStorage.removeItem('myId');
-  saveToDB();
-  document.getElementById('btn-recall').style.display=lastSaved?'block':'none';
-  renderListPage();
-  showToast('삭제됐어요');
+async function delMyCard(fid){
+  const c=carpools.find(x=>x.firebaseId===fid);if(c)lastSaved={...c};localStorage.setItem('lastSaved',JSON.stringify(lastSaved));
+  await deleteCarpool(fid);
+  if(myFirebaseId===fid){myFirebaseId=null;localStorage.removeItem('myFirebaseId');}
+  document.getElementById('btn-recall').style.display=lastSaved?'block':'none';showToast('삭제됐어요');
 }
 
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
+window.goStep=goStep;window.switchTab=switchTab;window.setRole=setRole;window.setGender=setGender;window.setPref=setPref;window.setDir=setDir;window.chSeat=chSeat;window.setFilter=setFilter;window.updateDist=updateDist;window.onDateChange=onDateChange;window.recallLast=recallLast;window.editCard=editCard;window.cancelEdit=cancelEdit;window.submitReg=submitReg;window.delMyCard=delMyCard;window.toggleStatus=toggleStatus;window.copyContact=copyContact;window.showToast=showToast;
 
-// =====================
-// 초기화
-// =====================
-(function init(){
-  cleanExpired();
-  renderStartWrap();renderEndWrap();
-  document.getElementById('r-date').value=todayStr();
-  document.getElementById('r-day').value=dayStr(todayStr());
-  document.getElementById('contact-wrap').style.display='block';
-  document.getElementById('btn-recall').style.display=lastSaved?'block':'none';
-  // myId 유효성 체크
-  if(myId&&!carpools.find(x=>x.id===myId)){myId=null;localStorage.removeItem('myId');}
-})();
+renderStartWrap();renderEndWrap();
+document.getElementById('r-date').value=todayStr();
+document.getElementById('r-day').value=dayStr(todayStr());
+document.getElementById('contact-wrap').style.display='block';
+document.getElementById('btn-recall').style.display=lastSaved?'block':'none';
 </script>
 </body>
 </html>
