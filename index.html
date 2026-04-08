@@ -475,10 +475,12 @@ function goStep(n){
   if(n>1){
     if(!document.getElementById('r-name').value.trim()){showToast('이름을 입력해주세요');return;}
     if(role==='driver'&&!document.getElementById('r-contact').value.trim()){showToast('연락처를 입력해주세요');return;}
-    const nick=document.getElementById('r-nick').value.trim();
-    const pin=document.getElementById('r-pin').value.trim();
-    if(!nick){showToast('닉네임을 입력해주세요');return;}
-    if(pin.length!==4){showToast('비밀번호는 숫자 4자리로 입력해주세요');return;}
+    if(role==='driver'){
+      const nick=document.getElementById('r-nick').value.trim();
+      const pin=document.getElementById('r-pin').value.trim();
+      if(!nick){showToast('닉네임을 입력해주세요');return;}
+      if(pin.length!==4){showToast('비밀번호는 숫자 4자리로 입력해주세요');return;}
+    }
   }
   if(n>2){
     if(direction==='to'){
