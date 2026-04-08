@@ -198,7 +198,7 @@ textarea{resize:none;height:60px;line-height:1.5;letter-spacing:normal}
             <button class="seg-btn" onclick="setRole('passenger',1)">🙋 탑승자</button>
           </div>
         </div>
-        <div class="fg"><label>이름</label><input id="r-name" type="text" placeholder="홍길동"></div>
+        <div class="fg" id="name-wrap"><label>이름</label><input id="r-name" type="text" placeholder="홍길동"></div>
         <div class="fg" id="contact-wrap">
           <label>연락처 / 오픈채팅 주소</label>
           <input id="r-contact" type="text" placeholder="카카오ID · 전화번호 · 오픈채팅URL">
@@ -520,7 +520,7 @@ function switchTab(t){
   window.scrollTo(0,0);
 }
 
-function setRole(r,idx){role=r;segSet('role-seg',idx);document.getElementById('contact-wrap').style.display=r==='driver'?'block':'none';document.getElementById('via-wrap').style.display=r==='driver'?'block':'none';document.getElementById('seat-wrap').style.display=r==='driver'?'block':'none';document.getElementById('auth-wrap').style.display=r==='driver'?'block':'none';document.getElementById('pref-label').textContent=r==='driver'?'탑승 희망자 성별':'운전 희망자 성별';document.getElementById('btn-submit').textContent=r==='passenger'?'카풀 매칭하기':'등록하기';}
+function setRole(r,idx){role=r;segSet('role-seg',idx);document.getElementById('contact-wrap').style.display=r==='driver'?'block':'none';document.getElementById('via-wrap').style.display=r==='driver'?'block':'none';document.getElementById('seat-wrap').style.display=r==='driver'?'block':'none';document.getElementById('auth-wrap').style.display=r==='driver'?'block':'none';document.getElementById('name-wrap').style.display=r==='driver'?'block':'none';document.getElementById('pref-label').textContent=r==='driver'?'탑승 희망자 성별':'운전 희망자 성별';document.getElementById('btn-submit').textContent=r==='passenger'?'카풀 매칭하기':'등록하기';}
 function setGender(g,idx){myGender=g;segSet('gender-seg',idx);}
 function setPref(g,idx){myPref=g;segSet('pref-seg',idx);}
 function setDir(d,idx){direction=d;segSet('dir-seg',idx);renderStartWrap();renderEndWrap();}
@@ -682,24 +682,56 @@ async function doLogin(){
 
 function fillForm(c,skipDate){
   role=c.role;myGender=c.gender||'male';myPref=c.pref||'any';direction=c.dir;
-  segSet('role-seg',c.role==='driver'?0:1);segSet('gender-seg',myGender==='male'?0:1);segSet('pref-seg',myPref==='any'?0:myPref==='male'?1:2);segSet('dir-seg',c.dir==='to'?0:1);
+  segSet('role-seg',c.role==='driver'?0:1);
+  segSet('gender-seg',myGender==='male'?0:1);
+  segSet('pref-seg',myPref==='any'?0:myPref==='male'?1:2);
+  segSet('dir-seg',c.dir==='to'?0:1);
   document.getElementById('contact-wrap').style.display=c.role==='driver'?'block':'none';
   document.getElementById('via-wrap').style.display=c.role==='driver'?'block':'none';
   document.getElementById('seat-wrap').style.display=c.role==='driver'?'block':'none';
+  document.getElementById('auth-wrap').style.display=c.role==='driver'?'block':'none';
+  document.getElementById('name-wrap').style.display=c.role==='driver'?'block':'none';
   document.getElementById('pref-label').textContent=c.role==='driver'?'탑승 희망자 성별':'운전 희망자 성별';
   document.getElementById('btn-submit').textContent=c.role==='passenger'?'카풀 매칭하기':'등록하기';
   document.getElementById('r-name').value=c.name||'';
   const rc=document.getElementById('r-contact');if(rc)rc.value=c.contact||'';
   document.getElementById('r-nick').value=c.nick||'';
-  renderStartWrap();renderEndWrap();
   const dateVal=skipDate?todayStr():(c.date||todayStr());
-  document.getElementById('r-date').value=dateVal;document.getElementById('r-day').value=dayStr(dateVal);
+  document.getElementById('r-date').value=dateVal;
+  document.getElementById('r-day').value=dayStr(dateVal);
+  document.getElementById('r-depart').value=c.depart||'07:30';
+  document.getElementById('r-arrive').value=c.arrive||'08:00';
+  document.getElementById('r-note').value=c.note||'';
+  seats=c.seats||3;document.getElementById('seat-n').textContent=seats;
+  // 경로 렌더 후 값 세팅
+  renderStartWrap();renderEndWrap();
   setTimeout(()=>{
-    if(c.dir==='to'){const sc=document.getElementById('r-start-city');if(sc){sc.value=c.startCity||'';updateDist('start');}setDistVal('start',c.startDist||'');setTimeout(()=>{const sa=document.getElementById('r-start-addr');if(sa)sa.value=c.startAddr||'';const eg=document.getElementById('r-end-gate');if(eg)eg.value=c.endGate||'';},120);}
-    else{const sg=document.getElementById('r-start-gate');if(sg)sg.value=c.startGate||'';const ec=document.getElementById('r-end-city');if(ec){ec.value=c.endCity||'';updateDist('end');}setDistVal('end',c.endDist||'');setTimeout(()=>{const ea=document.getElementById('r-end-addr');if(ea)ea.value=c.endAddr||'';},120);}
-    if(c.role==='driver'&&c.viaCity){const vc=document.getElementById('r-via-city');if(vc){vc.value=c.viaCity;updateDist('via');}setDistVal('via',c.viaDist||'');setTimeout(()=>{const vt=document.getElementById('r-via-time');if(vt&&c.viaTime)vt.value=c.viaTime;},120);}
-  },40);
-  document.getElementById('r-depart').value=c.depart||'07:30';document.getElementById('r-arrive').value=c.arrive||'08:00';document.getElementById('r-note').value=c.note||'';seats=c.seats||3;document.getElementById('seat-n').textContent=seats;
+    if(c.dir==='to'){
+      const sc=document.getElementById('r-start-city');
+      if(sc&&c.startCity){sc.value=c.startCity;updateDist('start');}
+      setTimeout(()=>{
+        const sd=document.getElementById('r-start-dist');if(sd&&c.startDist)sd.value=c.startDist;
+        const sa=document.getElementById('r-start-addr');if(sa)sa.value=c.startAddr||'';
+        const eg=document.getElementById('r-end-gate');if(eg)eg.value=c.endGate||'';
+      },150);
+    } else {
+      const sg=document.getElementById('r-start-gate');if(sg)sg.value=c.startGate||'';
+      const ec=document.getElementById('r-end-city');
+      if(ec&&c.endCity){ec.value=c.endCity;updateDist('end');}
+      setTimeout(()=>{
+        const ed=document.getElementById('r-end-dist');if(ed&&c.endDist)ed.value=c.endDist;
+        const ea=document.getElementById('r-end-addr');if(ea)ea.value=c.endAddr||'';
+      },150);
+    }
+    if(c.role==='driver'&&c.viaCity){
+      const vcEl=document.getElementById('r-via-city');
+      if(vcEl){vcEl.value=c.viaCity;updateDist('via');}
+      setTimeout(()=>{
+        const vdEl=document.getElementById('r-via-dist');if(vdEl&&c.viaDist)vdEl.value=c.viaDist;
+        const vtEl=document.getElementById('r-via-time');if(vtEl&&c.viaTime)vtEl.value=c.viaTime;
+      },150);
+    }
+  },50);
 }
 
 function recallLast(){if(!lastSaved)return;fillForm(lastSaved,true);document.getElementById('banner-recall').style.display='block';document.getElementById('btn-recall').style.display='none';showToast('이전 정보를 불러왔어요');}
@@ -712,7 +744,7 @@ function resetForm(){
   ['r-name','r-contact','r-note','r-nick','r-pin'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   role='driver';seats=3;direction='to';myGender='male';myPref='any';editingId=null;
   segSet('role-seg',0);segSet('dir-seg',0);segSet('gender-seg',0);segSet('pref-seg',0);
-  document.getElementById('contact-wrap').style.display='block';document.getElementById('via-wrap').style.display='block';document.getElementById('seat-wrap').style.display='block';
+  document.getElementById('contact-wrap').style.display='block';document.getElementById('via-wrap').style.display='block';document.getElementById('seat-wrap').style.display='block';document.getElementById('auth-wrap').style.display='block';document.getElementById('name-wrap').style.display='block';
   document.getElementById('pref-label').textContent='탑승 희망자 성별';document.getElementById('btn-submit').textContent='등록하기';document.getElementById('seat-n').textContent='3';
   document.getElementById('r-depart').value='07:30';document.getElementById('r-arrive').value='08:00';document.getElementById('r-date').value=todayStr();document.getElementById('r-day').value=dayStr(todayStr());
   document.getElementById('banner-recall').style.display='none';document.getElementById('btn-recall').style.display=lastSaved?'block':'none';
