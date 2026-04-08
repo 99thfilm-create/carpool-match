@@ -562,7 +562,14 @@ function calcMatch(driver,passenger){
       return score<20?null:{score,reason:reasons.slice(0,2).join(' · ')};
     }
   }
-  if(gm){score+=15;reasons.push('같은 정문');}
+  // 정문 점수 — 같으면 소폭 가산, 달라도 감점 없음 (같은 부대 내)
+  if(gm){score+=8;reasons.push('같은 정문');}
+  else if(driver.endGate&&passenger.endGate){score+=3;} // 다른 정문이어도 같은 부대니까 소폭 가산
+
+  // 성별 가산점
+  if(driver.gender===passenger.gender){score+=8;reasons.push('동성 매칭');}
+  if(driver.pref==='female'&&passenger.gender==='female'){score+=10;reasons.push('여성 선호 일치');}
+  else if(driver.pref==='male'&&passenger.gender==='male'){score+=5;}
 
   // 일반 출발 시간 비교 (경유지 없거나 경유지 시간 없는 경우)
   const diff=Math.abs(timeToMin(driver.depart)-timeToMin(passenger.depart));
