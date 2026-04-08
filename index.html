@@ -575,6 +575,8 @@ function calcMatch(driver,passenger){
   const diff=Math.abs(timeToMin(driver.depart)-timeToMin(passenger.depart));
   if(diff<=15){score+=25;reasons.push('출발시간 거의 동일');}else if(diff<=30){score+=18;reasons.push('출발시간 30분 이내');}else if(diff<=60){score+=8;reasons.push('출발시간 1시간 이내');}
   if(driver.seats>0)score+=5;
+  // 오픈채팅 사용 시 개인정보 보호 가산점
+  if(driver.contact&&(driver.contact.includes('open.kakao')||driver.contact.startsWith('http'))){score+=5;}
   score=Math.min(score,99);
   return score<20?null:{score,reason:reasons.slice(0,2).join(' · ')||'경로 부분 겹침'};
 }
@@ -646,10 +648,26 @@ function driverCardHTML(c,matchInfo,gOk,me){
   const dimClass=isClosed?'closed':(me&&(!gOk||!matchInfo))?'dimmed':'';
   const gBdg=c.gender==='female'?'bdg-f':'bdg-m';
   const ce=(c.contact||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-  return `<div class="ccard ${dimClass}"><div class="ch"><div class="cname-wrap"><div class="cname">${c.name} <span class="status-badge ${isClosed?'status-closed':'status-open'}" style="font-size:10px">${isClosed?'마감':'모집중'}</span></div><div class="cdate">${c.date} ${dayStr(c.date)}</div></div><div class="cbadges"><span class="bdg bdg-dir">${c.dir==='to'?'출근':'퇴근'}</span><span class="bdg ${gBdg}">${GL[c.gender]}</span>${c.pref!=='any'?`<span class="bdg bdg-pref">${GL[c.pref]} 희망</span>`:''}</div></div><div class="croute">${routeLabel(c)}</div>${addr||via?`<div class="caddr">${addr?'📍 '+addr:''}${addr&&via?' · ':''}${via}</div>`:''}<div class="cmeta"><span>🕐 ${c.depart}${c.viaTime?' → '+c.viaTime:''} → ${c.arrive}</span><span>👤 ${c.seats}석</span><span>${GL[c.gender]}</span></div>${c.note?`<div class="cnote">${c.note}</div>`:''}${!isClosed&&matchInfo?`<div class="match-box"><div class="match-hd">매칭 적합도</div><div class="mscore-row"><span style="font-size:13px;font-weight:500">이 운전자와의 매칭</span><span class="mscore-num">${matchInfo.score}점</span></div><div class="mwhy">${matchInfo.reason}${!gOk?' · 성별 조건 불일치':''}</div><div class="sbar"><div class="sfill" style="width:${matchInfo.score}%"></div></div></div>`:''}${!isClosed&&me&&!gOk?`<div class="gender-warn">성별 조건이 맞지 않아요</div>`:''} ${isClosed?`<div class="closed-msg">매칭 완료된 카풀입니다</div>`:`<button class="btn-contact" onclick="copyContact('${ce}')">연락하기 (연락처 복사)</button>`}</div>`;
+  const ct=detectContactType(c.contact);
+  const contactBadge=`<div style="font-size:12px;color:#666;background:#f8f8f8;padding:5px 10px;border-radius:7px;margin-bottom:8px">${ct.icon} ${ct.label}</div>`;
+  return `<div class="ccard ${dimClass}"><div class="ch"><div class="cname-wrap"><div class="cname">${c.name} <span class="status-badge ${isClosed?'status-closed':'status-open'}" style="font-size:10px">${isClosed?'마감':'모집중'}</span></div><div class="cdate">${c.date} ${dayStr(c.date)}</div></div><div class="cbadges"><span class="bdg bdg-dir">${c.dir==='to'?'출근':'퇴근'}</span><span class="bdg ${gBdg}">${GL[c.gender]}</span>${c.pref!=='any'?`<span class="bdg bdg-pref">${GL[c.pref]} 희망</span>`:''}</div></div><div class="croute">${routeLabel(c)}</div>${addr||via?`<div class="caddr">${addr?'📍 '+addr:''}${addr&&via?' · ':''}${via}</div>`:''}<div class="cmeta"><span>🕐 ${c.depart}${c.viaTime?' → '+c.viaTime:''} → ${c.arrive}</span><span>👤 ${c.seats}석</span><span>${GL[c.gender]}</span></div>${c.note?`<div class="cnote">${c.note}</div>`:''}${!isClosed&&matchInfo?`<div class="match-box"><div class="match-hd">매칭 적합도</div><div class="mscore-row"><span style="font-size:13px;font-weight:500">이 운전자와의 매칭</span><span class="mscore-num">${matchInfo.score}점</span></div><div class="mwhy">${matchInfo.reason}${!gOk?' · 성별 조건 불일치':''}</div><div class="sbar"><div class="sfill" style="width:${matchInfo.score}%"></div></div></div>`:''}${!isClosed&&me&&!gOk?`<div class="gender-warn">성별 조건이 맞지 않아요</div>`:''} ${isClosed?`<div class="closed-msg">매칭 완료된 카풀입니다</div>`:`${contactBadge}<button class="btn-contact" onclick="copyContact('${ce}')">${ct.icon} 연락하기 (${ct.label} 복사)</button>`}</div>`;
 }
 
-function copyContact(contact){if(navigator.clipboard){navigator.clipboard.writeText(contact).then(()=>showToast('연락처가 복사됐어요!'));}else{showToast('연락처: '+contact);}}
+// 연락처 타입 감지
+function detectContactType(contact){
+  if(!contact)return{type:'unknown',label:'연락처',icon:'📋'};
+  const c=contact.trim();
+  if(c.startsWith('http')||c.includes('open.kakao')){return{type:'openchat',label:'카카오 오픈채팅',icon:'💬'};}
+  if(c.match(/^01[0-9]-?\d{3,4}-?\d{4}$/)||c.match(/^01[0-9]\d{7,8}$/)){return{type:'phone',label:'휴대폰 번호',icon:'📱'};}
+  return{type:'kakao',label:'카카오 아이디',icon:'🟡'};
+}
+
+function copyContact(contact){
+  const ct=detectContactType(contact);
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(contact).then(()=>showToast(ct.icon+' '+ct.label+'가 복사됐어요!'));
+  }else{showToast(ct.label+': '+contact);}
+}
 
 function renderListPage(){
   renderMyCard();
