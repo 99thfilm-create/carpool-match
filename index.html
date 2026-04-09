@@ -610,12 +610,13 @@ function authThen(action,fid){
   pendingFid=fid;
   const c=carpools.find(x=>x.firebaseId===fid);
   if(!c)return;
-  // 이미 내 글로 인증된 상태면 바로 실행
-  if(myFirebaseId===fid){
+  // 내 글(같은 pinHash)이면 바로 실행
+  const myPinHash=myFirebaseId?carpools.find(x=>x.firebaseId===myFirebaseId)?.pinHash:null;
+  if(myFirebaseId===fid||(myPinHash&&c.pinHash===myPinHash)){
     execAction(action,fid);
     return;
   }
-  // 인증 필요
+  // 타인 글 — 인증 필요
   document.getElementById('auth-modal').style.display='flex';
   document.getElementById('auth-pin').value='';
   document.getElementById('auth-nick').value='';
