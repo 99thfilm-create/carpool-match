@@ -476,9 +476,20 @@ async function deleteCarpool(fid){
 
 function startListener(){
   if(unsubscribe)unsubscribe();
-  const today=todayStr();
+  const now=new Date();
+  const kst=new Date(now.getTime()+9*60*60*1000);
+  const todayDate=kst.toISOString().split('T')[0];
+  const nowMin=kst.getHours()*60+kst.getMinutes();
   unsubscribe=onSnapshot(query(collection(db,'carpools'),orderBy('ts','desc')),(snap)=>{
-    carpools=snap.docs.map(d=>({...d.data(),firebaseId:d.id})).filter(c=>!c.date||c.date>=today);
+    carpools=snap.docs.map(d=>({...d.data(),firebaseId:d.id})).filter(c=>{
+      if(!c.date)return true;
+      if(c.date>todayDate)return true;
+      if(c.date<todayDate)return false;
+      // 오늘이면 출발 시간 기준
+      if(!c.depart)return true;
+      const[h,m]=c.depart.split(':').map(Number);
+      return nowMin<(h*60+m);
+    });
     setSyncStatus('🟢 실시간 동기화 중','ok');
     renderListPage();
   },(err)=>{setSyncStatus('⚠️ 연결 오류 — 새로고침 해주세요','error');});
@@ -639,13 +650,44 @@ async function toggleStatus(fid){const c=carpools.find(x=>x.firebaseId===fid);if
 
 function renderMyCard(){
   const w=document.getElementById('my-info-wrap');
-  const c=myFirebaseId?carpools.find(x=>x.firebaseId===myFirebaseId):null;
-  if(!c){
+  if(!myFirebaseId){
     w.innerHTML=`<div class="no-my"><span>내 정보를 등록하거나 불러오세요</span><button onclick="openLoginModal()">🔑 내 글 불러오기</button></div>`;
     return;
   }
-  const isOpen=c.status==='open';
-  w.innerHTML=`<div class="my-card"><div class="my-hd"><div><div class="my-title">내 등록 (${c.role==='driver'?'운전자':'탑승자'} · ${c.dir==='to'?'출근':'퇴근'})</div><div class="my-date">${c.date} ${dayStr(c.date)}</div></div><div class="my-btns">${c.role==='driver'?`<button class="btn-sm ${isOpen?'btn-close-rec':'btn-reopen'}" onclick="authThen('toggle','${c.firebaseId}')">${isOpen?'마감':'모집중'}</button>`:''}<button class="btn-sm btn-edit" onclick="authThen('edit','${c.firebaseId}')">수정</button><button class="btn-sm btn-del" onclick="authThen('delete','${c.firebaseId}')">삭제</button></div></div><div class="my-route">${routeLabel(c)}</div>${(c.dir==='to'&&c.startAddr)||(c.dir==='from'&&c.endAddr)?`<div style="font-size:11px;color:#aaa;margin-bottom:4px">📍 ${c.dir==='to'?c.startAddr:c.endAddr}</div>`:''}<div class="my-meta"><span class="status-badge ${isOpen?'status-open':'status-closed'}">${isOpen?'모집중':'마감'}</span><span>🕐 ${c.depart}→${c.arrive}</span>${c.role==='driver'?`<span>👤 ${c.seats}석</span>`:''}<span>${GL[c.gender]} · 희망 ${GL[c.pref]}</span></div></div>`;
+  const myPinHash=carpools.find(x=>x.firebaseId===myFirebaseId)?.pinHash;
+  const myCards=myPinHash
+    ?carpools.filter(x=>x.pinHash===myPinHash)
+    :carpools.filter(x=>x.firebaseId===myFirebaseId);
+  if(!myCards.length){
+    w.innerHTML=`<div class="no-my"><span>내 정보를 등록하거나 불러오세요</span><button onclick="openLoginModal()">🔑 내 글 불러오기</button></div>`;
+    return;
+  }
+  w.innerHTML=`<div style="font-size:11px;font-weight:600;color:#8a7a60;margin-bottom:6px;padding-left:2px">📌 내 등록 글</div>`
+    +myCards.map(c=>{
+      const isOpen=c.status==='open';
+      return `<div class="my-card" style="margin-bottom:8px">
+        <div class="my-hd">
+          <div>
+            <div class="my-title">${c.role==='driver'?'운전자':'탑승자'} · ${c.dir==='to'?'출근':'퇴근'}</div>
+            <div class="my-date">${c.date} ${dayStr(c.date)}</div>
+          </div>
+          <div class="my-btns">
+            ${c.role==='driver'?`<button class="btn-sm ${isOpen?'btn-close-rec':'btn-reopen'}" onclick="authThen('toggle','${c.firebaseId}')">${isOpen?'마감':'모집중'}</button>`:''}
+            <button class="btn-sm btn-edit" onclick="authThen('edit','${c.firebaseId}')">수정</button>
+            <button class="btn-sm btn-del" onclick="authThen('delete','${c.firebaseId}')">삭제</button>
+          </div>
+        </div>
+        <div class="my-route">${routeLabel(c)}</div>
+        ${(c.dir==='to'&&c.startAddr)||(c.dir==='from'&&c.endAddr)?`<div style="font-size:11px;color:#aaa;margin-bottom:4px">📍 ${c.dir==='to'?c.startAddr:c.endAddr}</div>`:''}
+        <div class="my-meta">
+          <span class="status-badge ${isOpen?'status-open':'status-closed'}">${isOpen?'모집중':'마감'}</span>
+          <span>🕐 ${c.depart}→${c.arrive}</span>
+          ${c.role==='driver'?`<span>👤 ${c.seats}석</span>`:''}
+          <span>${GL[c.gender]} · 희망 ${GL[c.pref]}</span>
+        </div>
+      </div>`;
+    }).join('')
+    +`<div style="height:4px;border-bottom:2px dashed #e8e0d0;margin-bottom:12px"></div>`;
 }
 
 function driverCardHTML(c,matchInfo,gOk,me){
@@ -679,7 +721,8 @@ function copyContact(contact){
 function renderListPage(){
   renderMyCard();
   const el=document.getElementById('list-wrap');
-  let data=carpools.filter(x=>x.role==='driver'&&x.dir===filter&&x.firebaseId!==myFirebaseId);
+  const myPinHash=myFirebaseId?carpools.find(x=>x.firebaseId===myFirebaseId)?.pinHash:null;
+  let data=carpools.filter(x=>x.role==='driver'&&x.dir===filter&&x.firebaseId!==myFirebaseId&&(!myPinHash||x.pinHash!==myPinHash));
   if(!data.length){el.innerHTML=`<div class="empty"><div class="icon">🚗</div><p>등록된 운전자가 없어요.<br>첫 번째로 등록해보세요!</p></div>`;return;}
   const me=myFirebaseId?carpools.find(x=>x.firebaseId===myFirebaseId):null;
   const scored=data.map(d=>({...d,matchInfo:me&&me.dir===d.dir?calcMatch(d,me):null,gOk:genderOk(d,me)}));
