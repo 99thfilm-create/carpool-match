@@ -345,7 +345,7 @@ textarea{resize:none;height:60px;line-height:1.5;letter-spacing:normal}
     </div>
     <div class="fg">
       <label>비밀번호 4자리</label>
-      <input id="auth-pin" type="password" inputmode="numeric" maxlength="4" placeholder="••••" class="pin-input" autocomplete="current-password">
+      <input id="auth-pin" type="password" inputmode="numeric" maxlength="4" placeholder="••••" class="pin-input" autocomplete="current-password" onkeydown="if(event.key==='Enter'||event.key==='Go')doAuth()">
     </div>
     <div class="modal-btns">
       <button class="btn-secondary" onclick="closeAuthModal()" style="margin-top:0">취소</button>
@@ -365,7 +365,7 @@ textarea{resize:none;height:60px;line-height:1.5;letter-spacing:normal}
     </div>
     <div class="fg">
       <label>비밀번호 4자리</label>
-      <input id="login-pin" type="password" inputmode="numeric" maxlength="4" placeholder="••••" class="pin-input" autocomplete="current-password">
+      <input id="login-pin" type="password" inputmode="numeric" maxlength="4" placeholder="••••" class="pin-input" autocomplete="current-password" onkeydown="if(event.key==='Enter'||event.key==='Go')doLogin()">
     </div>
     <div class="modal-btns">
       <button class="btn-secondary" onclick="closeLoginModal()" style="margin-top:0">취소</button>
@@ -412,12 +412,19 @@ let noticeOpen=true;
 myFirebaseId=localStorage.getItem('myFirebaseId')||null;
 lastSaved=JSON.parse(localStorage.getItem('lastSaved')||'null');
 
-// 해시 함수 (PIN 암호화)
+// 해시 함수 (PIN 암호화) - 단순하고 일관된 방식
 async function hashPin(nick,pin){
-  const str=nick.trim().toLowerCase()+'::'+pin;
+  const str=nick.trim().toLowerCase()+'::'+pin.trim();
   const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
+
+// 디버그용 — 콘솔에서 hash 확인 가능
+window.testHash=async function(nick,pin){
+  const h=await hashPin(nick,pin);
+  console.log('hash:',h);
+  return h;
+};
 
 function todayStr(){const d=new Date();const kst=new Date(d.getTime()+9*60*60*1000);return kst.toISOString().split('T')[0];}
 function dayStr(s){if(!s)return '';const d=new Date(s+'T00:00:00');return DAYS[d.getDay()]+'요일';}
@@ -681,16 +688,27 @@ function renderListPage(){
 }
 
 // 로그인 모달
-function openLoginModal(){document.getElementById('login-modal').style.display='flex';document.getElementById('login-nick').focus();}
+function openLoginModal(){
+  // Firebase 데이터 먼저 로딩
+  if(!unsubscribe) startListener();
+  document.getElementById('login-modal').style.display='flex';
+  document.getElementById('login-nick').focus();
+}
 function closeLoginModal(){document.getElementById('login-modal').style.display='none';document.getElementById('login-nick').value='';document.getElementById('login-pin').value='';}
 
 async function doLogin(){
   const nick=document.getElementById('login-nick').value.trim();
   const pin=document.getElementById('login-pin').value.trim();
-  if(!nick||pin.length!==4){showToast('닉네임과 비밀번호 4자리를 입력해주세요');return;}
+  if(!nick||pin.length!==4){showToast('닉네임과 비밀번호 4자리를 입력해줘');return;}
   const hash=await hashPin(nick,pin);
+  // carpools 로딩 안 됐으면 잠깐 대기
+  if(carpools.length===0){
+    showToast('데이터 로딩 중... 잠시 후 다시 눌러줘');
+    if(!unsubscribe)startListener();
+    return;
+  }
   const found=carpools.find(c=>c.pinHash===hash);
-  if(!found){showToast('일치하는 등록 정보가 없어요');return;}
+  if(!found){showToast('일치하는 등록 정보가 없어요 (닉네임/비밀번호 확인)');return;}
   myFirebaseId=found.firebaseId;
   localStorage.setItem('myFirebaseId',myFirebaseId);
   closeLoginModal();
