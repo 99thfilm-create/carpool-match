@@ -712,8 +712,9 @@ async function doLogin(){
   myFirebaseId=found.firebaseId;
   localStorage.setItem('myFirebaseId',myFirebaseId);
   closeLoginModal();
-  renderListPage();
-  showToast('내 글을 불러왔어요 ✓');
+  // 카풀 찾기 탭으로 이동 — 내 글 상단에 바로 보임
+  switchTab('list');
+  showToast('내 글을 불러왔어요 ✓ 상단에서 확인하세요');
 }
 
 function fillForm(c,skipDate){
